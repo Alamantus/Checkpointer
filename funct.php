@@ -10,7 +10,7 @@ function fetch_assoc ($query_results) {
 }
 
 function Show_Login_Form ($name) {
-    $login_form = '<h3>Log In</h3>';
+    $login_form = '<div id="loginForm"><h3>Log In</h3>';
     $login_form .= '<form method="post" action=".?action=login">';
     $login_form .= 'Username:<br>';
     $login_form .= '<input type="text" name="name" value="' . $name . '" onclick="this.select()" length="29">';
@@ -19,7 +19,7 @@ function Show_Login_Form ($name) {
     $login_form .= '<input type="password" name="pw" value="" onclick="this.select()">';
     $login_form .= '<br><br>';
     $login_form .= '<input type="submit" value="Submit">';
-    $login_form .= '</form>';
+    $login_form .= '</form></div>';
     
     echo $login_form;
 }

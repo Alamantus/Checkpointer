@@ -1,0 +1,13 @@
+body {
+    margin: 25px;
+}
+
+#footer {
+    margin: 30px 0px 0px;
+}
+
+.clickable {
+    cursor: pointer;
+    color: #3366EE;
+    text-decoration: underline;
+}
