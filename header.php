@@ -1,9 +1,12 @@
 <?php
-$page_title = "";
+
 ?>
 <html>
 <head>
-    <title><?php echo $page_title . " | " . SITE_NAME; ?></title>
+    <title><?php echo SITE_NAME; ?></title>
+    
+    <!-- External Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 <body>
 <div id="page">

@@ -1,4 +1,7 @@
 <?php
+
+define("SITE_NAME", "Checkpointer");
+
 function connection() {
     $servername = "localhost";
     $username = "";
@@ -14,6 +17,4 @@ function connection() {
     
     return $conn;
 }
-
-define("SITE_NAME", "See.All.My Dreams");
 ?>
