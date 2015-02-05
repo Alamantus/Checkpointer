@@ -64,20 +64,18 @@ function Output_User_Milestones ($id) {
     $milestones_output = "";
 
     if ($milestones != false && num_rows($milestones) > 0) {
-        echo "<ul>";
+        echo "<div class='root_milestone'>";
         // output data of each milestone as a list item
         while($milestone = fetch_assoc($milestones)) {
-            $milestones_output .= "<li><strong title='Created ". date("l, F j, Y \a\\t g:i a",$milestone["created_date"]) ."'>" . $milestone["title"]. "</strong><span style='margin-left:50px;font-size:10px;'><a href='?action=edit&id=". $milestone["id"] ."'>Edit</a></span><br />" . $milestone["text"]. "<br />User: " . Get_Username($milestone["owner"]) . "<br />";
-            $milestones_output .= "<hr><strong>Add Milestone Below \"" . $milestone["title"]. "\"</strong><br />" . Return_Add_Milestone_Form($milestone["id"]) . "<ul>";
+            $milestones_output .= "<div class='milestone'><div id='milestone". $milestone["id"] ."' class='milestone_title'><strong title='Created ". date("l, F j, Y \a\\t g:i a",$milestone["created_date"]) ."' class='clickable'>" . $milestone["title"]. "</strong></div><span style='margin-left:50px;font-size:10px;'><a href='?action=edit&id=". $milestone["id"] ."'>Edit</a></span><br /><div id='milestone". $milestone["id"] ."_details' class='details'>" . $milestone["text"]. "</div>";
+            $milestones_output .= "<hr><strong>Add Milestone Below \"" . $milestone["title"]. "\"</strong><br />" . Return_Add_Milestone_Form($milestone["id"]);
             $milestones_output .= Get_Children($milestone["id"]);
-            $milestones_output .= "</ul></li>";
+            $milestones_output .= "</div>";
         }
-        echo $milestones_output . "</ul><strong>Add New Milestone</strong><br />" . Return_Add_Milestone_Form(0);
-        return;
-    } else {
-        echo "<strong>Add New Milestone</strong><br />" . Return_Add_Milestone_Form(0);
-        return;
+        echo $milestones_output . "</div>";
     }
+    echo "<strong>Add New Milestone</strong><br />" . Return_Add_Milestone_Form(0);
+    return;
 }
 function Get_Children($id) {
     $children_query = "SELECT * FROM milestone WHERE parent=" . $id . " ORDER BY sort ASC";
@@ -87,10 +85,10 @@ function Get_Children($id) {
     if ($children != false && num_rows($children) > 0) {
         // output data of each milestone as a list item
         while($child = fetch_assoc($children)) {
-            $child_output .= "<li><strong title='Created ". date("l, F j, Y \a\\t g:i a",$child["created_date"]) ."'>" . $child["title"]. "</strong><span style='margin-left:50px;font-size:10px;'><a href='?action=edit&id=". $child["id"] ."'>Edit</a></span><br />" . $child["text"] . "<br />";
-            $child_output .= "<hr><strong>Add Milestone Below \"" . $child["title"]. "\"</strong><br />" . Return_Add_Milestone_Form($child["id"]) . "<ul>";
+            $child_output .= "<div class='milestone'><div id='milestone". $child["id"] ."' class='milestone_title'><strong title='Created ". date("l, F j, Y \a\\t g:i a",$child["created_date"]) ."' class='clickable'>" . $child["title"]. "</strong></div><span style='margin-left:50px;font-size:10px;'><a href='?action=edit&id=". $child["id"] ."'>Edit</a></span><br /><div id='milestone". $child["id"] ."_details' class='details'>" . $child["text"]. "</div>";
+            $child_output .= "<hr><strong>Add Milestone Below \"" . $child["title"]. "\"</strong><br />" . Return_Add_Milestone_Form($child["id"]);
             $child_output .= Get_Children($child["id"]);
-            $child_output .= "</ul></li>";
+            $child_output .= "</div>";
         }
         return $child_output;
     }
