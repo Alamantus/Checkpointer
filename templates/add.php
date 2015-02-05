@@ -1,7 +1,7 @@
 <?php
 if (isset($_POST["title"])) {
     $title = htmlspecialchars($_POST["title"]);
-    $text = isset($_POST["text"]) ? htmlspecialchars($_POST["text"]) : "";
+    $text = htmlspecialchars($_POST["text"]);
     $parent = isset($_POST["parent"]) ? $_POST["parent"] : 0;
     $sort = isset($_POST["sort"]) ? $_POST["sort"] : 0;
     $status = isset($_POST["status"]) ? $_POST["status"] : 1;

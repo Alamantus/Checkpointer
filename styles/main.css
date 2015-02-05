@@ -1,9 +1,93 @@
-body {
-    margin: 25px;
+html, body {
+    position: relative;
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+form {
+    margin: 8px 0px 0px;
+}
+
+#header {
+    z-index: 10;
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    margin: 0px;
+    padding: 0px;
+    background: #B9B9DD;
+}
+
+#heading {
+    margin: 10px;
+    padding: 0px;
+    font-size: 34px;
+    font-weight: bold;
+    float: left;
+    color: black;
+    text-decoration: none;
+}
+
+#page {
+    z-index: 0;
+    position: relative;
+    width: 95%;
+    top: 60px;
+    margin: 0px 0px 25px;
+    padding: 15px 25px;
+    background: #FFFFFF;
 }
 
 #footer {
-    margin: 30px 0px 0px;
+    z-index: 10;
+    position: fixed;
+    width: 100%;
+    height: 15px;
+    bottom: 0px;
+    margin: 0px;
+    padding: 10px;
+    background: #BFBFBF;
+}
+
+.headerButton {
+    float: right;
+    margin: 20px;
+    width: 80px;
+}
+#newGoalButton, #loginButton, #logOutButton {
+    font-weight: bold;
+}
+#cancelNewGoalButton, #cancelLoginButton {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+}
+#newGoalForm, #loginForm {
+    position: relative;
+    float: right;
+    top: 22px;
+    margin: 0px;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid #DDDDDD;
+    border-radius: 3px;
+    background-color: #D9D9FF;
+}
+
+.editButton {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    font-size:10px;
+}
+
+
+#copyright {
+    float: right;
+    margin-right: 20px;
 }
 
 .clickable {
@@ -21,6 +105,88 @@ body {
     border: none;
 }
 
+.invalid {
+    display: block;
+    color: #DC0000;
+    padding: 3px;
+}
+
 .milestone {
-    margin: 0px 0px 15px 20px;
+    position: relative;
+    margin: 8px 0px 8px 20px;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+    background-color: #D9D9FF;
+}
+.milestone .milestone {
+    background-color: #EEEEEE;
+}
+.milestone .milestone .milestone {
+    background-color: #D9D9FF;
+}
+.milestone .milestone .milestone .milestone {
+    background-color: #EEEEEE;
+}
+.milestone .milestone .milestone .milestone .milestone {
+    background-color: #D9D9FF;
+}
+.milestone .milestone .milestone .milestone .milestone .milestone {
+    background-color: #EEEEEE;
+}
+.milestone .milestone .milestone .milestone .milestone .milestone .milestone {
+    background-color: #D9D9FF;
+}
+.milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone {
+    background-color: #EEEEEE;
+}
+.milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone {
+    background-color: #D9D9FF;
+}
+.milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone {
+    background-color: #EEEEEE;
+}
+.milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone {
+    background-color: #D9D9FF;
+}
+.milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone .milestone  .milestone {
+    background-color: #EEEEEE;
+}
+.milestone_title {
+    position: relative;
+    margin: 0px;
+    padding: 5px 15px;
+    color: black;
+    text-decoration: none;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom: 1px solid #5555CC;
+    background-color: #CFCFCC;
+}
+.milestone_details {
+    position: relative;
+    margin: 0px;
+    padding: 10px 25px;
+    border-bottom: 1px solid #5555CC;
+}
+
+.addCheckpointArea {
+    position: relative;
+    margin: 0px;
+    padding: 10px 25px;
+    color: black;
+    text-decoration: none;
+    backgr/ound-color: #A0A0CD;
+    font-size: 85%;
+}
+.addCheckpointButton {
+    font-weight: bold;
+    /*background-color: #DFDFDD;*/
+}
+.addCheckpointForm {
+    font-size: 12px;
+    font-weight: bold;
 }

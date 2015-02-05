@@ -1,6 +1,7 @@
 <?php
 require_once('config.php');
 require_once('funct.php');
+require_once('outputs.php');
 session_start();
 $current_user = isset($_SESSION['user']) ? $_SESSION['user'] : 0;
 
@@ -23,7 +24,25 @@ elseif ($action == "logout") {
     include_once('templates/logout.php');
 }
 elseif (!isset($_SESSION['user'])) {
-    echo "You are not logged in!<br /><a href='?action=login'>Log in</a> to see milestones.";
+?>
+    <strong>You are not logged in!</strong>
+    <!--<p><span id="loginButton" class="clickable">Log in</span> to see milestones.</p>
+    <div id="loginForm">
+        <form name="logIn" method="post" action="?action=login" onsubmit="return validateLogin()">
+        Username:<br />
+        <span id="nameMessage" class="hidden"><br /></span>
+        <input type="text" id="nameInput" name="name" value="" onclick="this.select()" length="29">
+        <br />
+        Password:<br />
+        <span id="pwMessage" class="hidden"><br /></span>
+        <input type="password" id="pwInput" name="pw" value="" onclick="this.select()">
+        <br /><br />
+        <input type="submit" value="Submit">
+        </form>
+        <span id="cancelLoginButton" class="clickable">Cancel</span>
+    </div>-->
+<?php
+    //include("templates/lorem.php");
 }
 else {  //just show milestones
     if ($current_user) {

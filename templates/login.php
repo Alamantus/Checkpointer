@@ -7,7 +7,6 @@ if (isset($_POST['name'])) {
         header('Location: .');
     } else {
         echo "Incorrect username/password combination";
-        Show_Login_Form($_POST['name']);
     }
 }
 else {
