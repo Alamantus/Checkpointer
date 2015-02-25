@@ -7,7 +7,7 @@ if (isset($_POST["title"])) {
     $status = isset($_POST["status"]) ? $_POST["status"] : 1;
     $owner = isset($_SESSION["user"]) ? $_SESSION["user"] : 0;
     
-    $insert_sql = "INSERT INTO milestone (title, text, parent, sort, status, owner, created_date) ";
+    $insert_sql = "INSERT INTO checkpoint (title, text, parent, sort, status, owner, created_date) ";
     $insert_sql .= "VALUES ('" . $title . "', '" . $text . "', " . $parent . ", " . $sort . ", " . $status . ", " . $owner . ", " . time() . ");";
     if (query($insert_sql)) {
         echo "New record created successfully";

@@ -26,7 +26,7 @@ elseif ($action == "logout") {
 elseif (!isset($_SESSION['user'])) {
 ?>
     <strong>You are not logged in!</strong>
-    <!--<p><span id="loginButton" class="clickable">Log in</span> to see milestones.</p>
+    <!--<p><span id="loginButton" class="clickable">Log in</span> to see checkpoints.</p>
     <div id="loginForm">
         <form name="logIn" method="post" action="?action=login" onsubmit="return validateLogin()">
         Username:<br />
@@ -44,13 +44,13 @@ elseif (!isset($_SESSION['user'])) {
 <?php
     //include("templates/lorem.php");
 }
-else {  //just show milestones
+else {  //just show checkpoints
     if ($current_user) {
-        Output_User_Milestones($current_user);
+        Output_User_Checkpoints($current_user);
     } else {
         echo "You are not logged in.";
     }
-} //end else to show milestones
+} //end else to show checkpoints
 
 include('footer.php');
 ?>

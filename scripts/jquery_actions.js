@@ -36,9 +36,9 @@ $( document ).ready(function() {
         }
     });
     
-    // Show/hide milestone details
-    $(".milestone_details").hide();
-    $(".milestone_title").click(function (event) {
+    // Show/hide checkpoint details
+    $(".checkpoint_details").hide();
+    $(".checkpoint_title").click(function (event) {
         var thisID = $(this).attr('id');
         var detailsID = "#" + thisID + "_details";
         $(detailsID).toggle("fast");

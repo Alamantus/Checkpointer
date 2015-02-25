@@ -23,10 +23,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `milestone`
+-- Table structure for table `checkpoint`
 --
 
-CREATE TABLE IF NOT EXISTS `milestone` (
+CREATE TABLE IF NOT EXISTS `checkpoint` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL,
   `text` text NOT NULL,

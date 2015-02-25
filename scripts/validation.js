@@ -35,7 +35,7 @@ function validateLoginPw () {
     }
 }
 
-function validateMilestone () {
+function validateCheckpoint () {
     console.log("validating goal");
     $("newTitleMessage").html("");
     $("#newTitleMessage").attr("class", "hidden");
