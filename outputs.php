@@ -57,21 +57,30 @@ function Output_User_Checkpoints ($id) {
         echo "<div class='root_checkpoint'>";
         // output data of each checkpoint as a list item
         while($checkpoint = fetch_assoc($checkpoints)) {
-            $checkpoints_output .= "<div class='checkpoint'>";
-            $checkpoints_output .= "<div id='checkpoint". $checkpoint["id"] ."' class='checkpoint_title clickable'>";
-            $checkpoints_output .= "<strong title='Created ". date("l, F j, Y \a\\t g:i a",$checkpoint["created_date"]) ."'>" . $checkpoint["title"]. "</strong>";
+            $checkpoints_output .= "<div class='goal'>";
+            $checkpoints_output .= "<div id='goal". $checkpoint["id"] ."' class='goal_title'>";
+            $checkpoints_output .= "<strong class='title' title='Created ". date("l, F j, Y \a\\t g:i a",$checkpoint["created_date"]) ."'>";
+            $checkpoints_output .= $checkpoint["title"];
+            $checkpoints_output .= "</strong>";
+            $checkpoints_output .= "<strong id='goal". $checkpoint["id"] ."_edit' class='editButton clickable'>Edit</strong>";
+            $checkpoints_output .= "<strong class='addCheckpointButton clickable' title='Add Checkpoint to \"" . $checkpoint["title"]. "\"' id='addCheckpoint". $checkpoint["id"] ."'>";
+            $checkpoints_output .= "+";
+            $checkpoints_output .= "</strong>";
             $checkpoints_output .= "</div>";
-            $checkpoints_output .= "<div id='checkpoint". $checkpoint["id"] ."_details' class='checkpoint_details'>";
-            $checkpoints_output .= "<span class='editButton'><a href='?action=edit&id=". $checkpoint["id"] ."'>Edit</a></span>";
+            $checkpoints_output .= "<div id='goal". $checkpoint["id"] ."_details' class='goal_details'>";
             $checkpoints_output .= $checkpoint["text"];
             $checkpoints_output .= "</div>";
             $checkpoints_output .= "<div class='addCheckpointArea'>";
-            $checkpoints_output .= "<span class='addCheckpointButton clickable' id='addCheckpoint". $checkpoint["id"] ."'>Add Checkpoint to \"" . $checkpoint["title"]. "\"</span>";
+            //$checkpoints_output .= "<span class='addCheckpointButton clickable' id='addCheckpoint". $checkpoint["id"] ."'>Add Checkpoint to \"" . $checkpoint["title"]. "\"</span>";
             $checkpoints_output .= "<div id='addCheckpoint". $checkpoint["id"] ."_form' class='addCheckpointForm'>";
             $checkpoints_output .= Return_Add_Checkpoint_Form($checkpoint["id"]);
             $checkpoints_output .= "</div>";
             $checkpoints_output .= "</div>";
+            $checkpoints_output .= Count_Children($checkpoint["id"], "goal", " Checkpoints");   //Inserts its own div section.
+            $checkpoints_output .= "<div id='goal". $checkpoint["id"] ."_children' class='children'>";
+            $checkpoints_output .= "<span id='goal". $checkpoint["id"] ."_children_hide' class='hideChildrenButton clickable'>Hide Checkpoints</span>";
             $checkpoints_output .= Get_Children($checkpoint["id"]);
+            $checkpoints_output .= "</div>";
             $checkpoints_output .= "</div>";
         }
         echo $checkpoints_output . "</div>";
@@ -89,13 +98,65 @@ function Get_Children($id) {
     if ($children != false && num_rows($children) > 0) {
         // output data of each checkpoint as a list item
         while($child = fetch_assoc($children)) {
-            $child_output .= "<div class='checkpoint'><div id='checkpoint". $child["id"] ."' class='checkpoint_title clickable'><strong title='Created ". date("l, F j, Y \a\\t g:i a",$child["created_date"]) ."'>" . $child["title"]. "</strong></div><div id='checkpoint". $child["id"] ."_details' class='checkpoint_details'><span class='editButton'><a href='?action=edit&id=". $child["id"] ."'>Edit</a></span>" . $child["text"]. "</div>";
-            $child_output .= "<div class='addCheckpointArea'><span class='addCheckpointButton clickable' id='addCheckpoint". $child["id"] ."'>Add Checkpoint to \"" . $child["title"]. "\"</span>";
-            $child_output .= "<div id='addCheckpoint". $child["id"] ."_form' class='addCheckpointForm'>" . Return_Add_Checkpoint_Form($child["id"]) . "</div></div>";
+            $child_output .= "<div class='checkpoint'>";
+            $child_output .= "<div id='checkpoint". $child["id"] ."' class='checkpoint_title'>";
+            $child_output .= "<strong class='title' title='Created ". date("l, F j, Y \a\\t g:i a",$child["created_date"]) ."'>";
+            $child_output .= $child["title"];
+            $child_output .= "</strong>";
+            $child_output .= "<strong id='checkpoint". $child["id"] ."_edit' class='editButton clickable'>Edit</strong>";
+            $child_output .= "<strong class='addCheckpointButton clickable' title='Add Checkpoint to \"" . $child["title"]. "\"' id='addCheckpoint". $child["id"] ."'>";
+            $child_output .= "+";
+            $child_output .= "</strong>";
+            $child_output .= "</div>";
+            if ($child["text"] != "") {
+            $child_output .= "<div id='checkpoint". $child["id"] ."_details_snip' title='Expand Details' class='checkpoint_details_snip clickable'>";
+                $child_output .= substr($child["text"], 0, 30);
+                if (strlen($child["text"]) > 30) {
+                    $child_output .= "...";
+                }
+            $child_output .= "</div>";
+            }
+            $child_output .= "<div id='checkpoint". $child["id"] ."_details' class='checkpoint_details'>";
+            $child_output .= "<div class='checkpoint_actions'>";
+            $child_output .= "<span id='checkpoint". $child["id"] ."_details_hide' class='hideDetailsButton clickable'>";
+            $child_output .= "Collapse";
+            $child_output .= "</span>";
+            $child_output .= "</div>";
+            $child_output .= "<div id='checkpoint". $child["id"] ."_details_text' class='checkpoint_details_text'>";
+            $child_output .= $child["text"];
+            $child_output .= "</div>";
+            $child_output .= "</div>";
+            $child_output .= "<div class='addCheckpointArea'>";
+            //$child_output .= "<span class='addCheckpointButton clickable' id='addCheckpoint". $child["id"] ."'>Add Checkpoint to \"" . $child["title"]. "\"</span>";
+            $child_output .= "<div id='addCheckpoint". $child["id"] ."_form' class='addCheckpointForm'>";
+            $child_output .= Return_Add_Checkpoint_Form($child["id"]);
+            $child_output .= "</div>";
+            $child_output .= "</div>";
+            $child_output .= Count_Children($child["id"], "checkpoint", " Sub-Checkpoints");  //Inserts its own div section.
+            $child_output .= "<div id='checkpoint". $child["id"] ."_children' class='children'>";
+            $child_output .= "<span id='checkpoint". $child["id"] ."_children_hide' class='hideChildrenButton clickable'>";
+            $child_output .= "Hide Sub-Checkpoints";
+            $child_output .= "</span>";
             $child_output .= Get_Children($child["id"]);
+            $child_output .= "</div>";
             $child_output .= "</div>";
         }
         return $child_output;
+    }
+    else {
+        return;
+    }
+}
+function Count_Children($id, $id_prefix, $suffix) {
+    $children_query = "SELECT * FROM checkpoint WHERE parent=" . $id . " ORDER BY sort ASC";
+    $children = query($children_query);
+    $output = "";
+    
+    if ($children != false && num_rows($children) > 0) {
+        $output .= "<div id='". $id_prefix . $id ."_children_count' class='childCount clickable'>";
+        $output .= "Show ". num_rows($children) . $suffix;
+        $output .= "</div>";
+        return $output;
     }
     else {
         return;

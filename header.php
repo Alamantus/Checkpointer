@@ -37,6 +37,11 @@
             </form>
         </div>
     </div>
+    
+    <!--<div id="refreshButton" class="headerButton">
+        <span id="<?php echo $_SESSION['user']; ?>" class="clickable">Refresh</span>
+    </div>-->
+    
     <?php
     } else {
     ?>

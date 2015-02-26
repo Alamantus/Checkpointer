@@ -55,10 +55,11 @@ form {
     float: right;
     margin: 20px;
     width: 80px;
-}
-#newGoalButton, #loginButton, #logOutButton {
     font-weight: bold;
 }
+/*#newGoalButton, #refreshButton, #loginButton, #logOutButton {
+    font-weight: bold;
+}*/
 #cancelNewGoalButton, #cancelLoginButton {
     position: absolute;
     right: 15px;
@@ -77,10 +78,8 @@ form {
     background-color: #D9D9FF;
 }
 
-.editButton {
-    position: absolute;
-    right: 15px;
-    top: 5px;
+.hideDetailsButton, .editButton {
+    margin: 5px 10px;
     font-size:10px;
 }
 
@@ -111,47 +110,52 @@ form {
     padding: 3px;
 }
 
-.checkpoint {
+.goal, .checkpoint {
     position: relative;
     margin: 8px 0px 8px 20px;
     border: 1px solid #DDDDDD;
     border-radius: 5px;
+}
+.goal {
+    background-color: #D4B8DF;
+}
+.goal .checkpoint {
     background-color: #D9D9FF;
 }
-.checkpoint .checkpoint {
+.goal .checkpoint .checkpoint {
     background-color: #EEEEEE;
 }
-.checkpoint .checkpoint .checkpoint {
+.goal .checkpoint .checkpoint .checkpoint {
     background-color: #D9D9FF;
 }
-.checkpoint .checkpoint .checkpoint .checkpoint {
+.goal .checkpoint .checkpoint .checkpoint .checkpoint {
     background-color: #EEEEEE;
 }
-.checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
+.goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
     background-color: #D9D9FF;
 }
-.checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
+.goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
     background-color: #EEEEEE;
 }
-.checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
+.goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
     background-color: #D9D9FF;
 }
-.checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
+.goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
     background-color: #EEEEEE;
 }
-.checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
+.goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
     background-color: #D9D9FF;
 }
-.checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
+.goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
     background-color: #EEEEEE;
 }
-.checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
+.goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
     background-color: #D9D9FF;
 }
-.checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint  .checkpoint {
+.goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint  .checkpoint {
     background-color: #EEEEEE;
 }
-.checkpoint_title {
+.checkpoint_title, .goal_title {
     position: relative;
     margin: 0px;
     padding: 5px 15px;
@@ -166,27 +170,60 @@ form {
     border-bottom: 1px solid #5555CC;
     background-color: #CFCFCC;
 }
-.checkpoint_details {
+
+.goal_actions, .checkpoint_actions, .checkpoint_details_text {
+    display: block;
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
+}
+
+.goal_details, .checkpoint_details, .checkpoint_details_snip {
     position: relative;
     margin: 0px;
-    padding: 10px 25px;
+    padding: 5px 25px 10px;
     border-bottom: 1px solid #5555CC;
 }
 
-.addCheckpointArea {
+.checkpoint_details_snip {
+    font-size: 80%;
+    font-weight: bold;
+}
+
+.children {
+    margin: 10px 0px 0px;
+}
+
+.addCheckpointArea, .childCount, .hideChildrenButton {
     position: relative;
     margin: 0px;
-    padding: 10px 25px;
-    color: black;
-    text-decoration: none;
-    backgr/ound-color: #A0A0CD;
+    padding: 5px 25px 10px;
     font-size: 85%;
 }
+.addCheckpointArea {
+    color: black;
+    text-decoration: none;
+    padding-bottom: 5px;
+    backgr/ound-color: #A0A0CD;
+}
 .addCheckpointButton {
-    font-weight: bold;
+    font-weight: bolder;
+    margin: 0px 20px;
+    font-size: 150%;
+    text-decoration: none;
     /*background-color: #DFDFDD;*/
 }
 .addCheckpointForm {
     font-size: 12px;
     font-weight: bold;
+}
+
+.titleEditBox {
+    min-width: 25%;
+    max-width: 50%;
+    width: auto;
+}
+.detailsEditBox {
+    width: 80%;
+    height: 150px;
 }

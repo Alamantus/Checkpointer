@@ -1,0 +1,1 @@
+<?phprequire_once('../config.php');require_once('../funct.php');require_once('../outputs.php');Output_User_Checkpoints($_GET["id"]);?>
