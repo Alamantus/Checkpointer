@@ -24,17 +24,19 @@
         <span id="newGoalButton" class="clickable">New Goal</span>
         <div id="newGoalForm">
             <span id="cancelNewGoalButton" class="clickable">Cancel</span>
-            <form method="post" action="?action=add" onsubmit="return validateMilestone()">
+            <?php echo Return_Add_Checkpoint_Form (0); ?>
+            <!--<form method="post" action="?action=add" onsubmit="return validateMilestone()">
             <p>Title:<br />
             <span id="newTitleMessage" class="hidden"><br /></span>
-            <input id="newTitleInput" type="text" name="title" value="" length="199"></p>
+            <input id="newTitleInput" type="text" name="title" value="" length="199" autocomplete="off"></p>
             <p>Details:<br />
             <textarea rows="4" name="text"></textarea></p>
             <p>Sort Order:<br />
-            <input type="text" name="sort" value="0" length="3"></p>
+            <span id="newSortMessage" class="hidden"><br /></span>
+            <input id="newSortInput" type="text" name="sort" value="0" length="3" autocomplete="off"></p>
             <input type="hidden" name="parent" value="0">
             <p><input type="submit" value="Submit"></p>
-            </form>
+            </form>-->
         </div>
     </div>
     
@@ -57,8 +59,7 @@
             Password:<br />
             <span id="pwMessage" class="hidden"><br /></span>
             <input type="password" id="pwInput" name="pw" value="" onclick="this.select()">
-            <br />
-            <input type="submit" value="Submit">
+            <p><input type="submit" value="Submit"></p>
             </form>
         </div>
     </div>

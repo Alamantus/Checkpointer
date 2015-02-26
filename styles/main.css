@@ -227,3 +227,7 @@ form {
     width: 80%;
     height: 150px;
 }
+.deleteButton, .deleteConfirm {
+    font-size: 80%;
+    font-style: italic;
+}

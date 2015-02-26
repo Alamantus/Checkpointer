@@ -35,6 +35,11 @@ $( document ).ready(function() {
             validateCheckpoint($(this).attr("parentID"));
         }
     });
+    $(".checkpointSortInput").focusout(function () {
+        if ($(this).is(":visible")) {
+            validateCheckpoint($(this).attr("parentID"));
+        }
+    });
     
     // Refresh List Button
     $("#refreshButton").click(function (event) {
@@ -65,6 +70,8 @@ $( document ).ready(function() {
         var titleID = "#" + thisButtonID.replace("_edit", "");
         var detailsID = "#" + thisButtonID.replace("_edit", "_details");
         var detailsSnipID = detailsID + "_snip";
+        var detailsClass = "." + $(detailsID).attr('class');
+        var checkpointID = titleID.replace("#", "").replace("goal", "").replace("checkpoint", "");
         
         if ($(this).text() == "Edit") {
             $(this).text("Done");
@@ -72,22 +79,37 @@ $( document ).ready(function() {
             var titleText = $(titleID).children(".title").text();
             var titleEditBox = "<textarea id='" + titleID.replace("#", "") + "_editbox' class='titleEditBox'>" + titleText + "</textarea>";
             // Need to fix this -- Prevents changing root-level "goals"
-            var detailsText = $(detailsID).children(".checkpoint_details_text").text();
+            var detailsText = $(detailsID).children(detailsClass + "_text").text();
             var detailsEditBox = "<textarea id='" + detailsID.replace("#", "") + "_editbox' class='detailsEditBox'>" + detailsText + "</textarea>";
-            detailsEditBox += "<br /><br /><span id=" + titleID.replace("#", "") + "_delete' class='deleteButton clickable'>Delete?</span>";
+            detailsEditBox += "<br /><br /><span id='" + titleID.replace("#", "") + "_delete' class='deleteButton clickable'>Delete?</span>";
+            detailsEditBox += "<div class='deleteConfirm'>";
+            if (detailsClass.indexOf("goal") >= 0) {
+                detailsEditBox += "Are you sure you want to delete this goal and all its checkpoints?<br />";
+            } else {
+                detailsEditBox += "Are you sure you want to delete this checkpoint and all its sub-checkpoints?<br />";
+            }
+            detailsEditBox += "<span id='yesButton' class='clickable'>Yes</span>";
+            detailsEditBox += "&nbsp;&nbsp;&nbsp;&nbsp;";
+            detailsEditBox += "<span id='noButton' class='clickable'>No</span>";
+            detailsEditBox += "</div>";
             
             $(titleID).children(".title").html(titleEditBox);
             
             $(detailsSnipID).hide("fast");
             $(detailsID).show("fast");
-            $(detailsID).children(".checkpoint_details_text").html(detailsEditBox);
+            $(detailsID).children(detailsClass + "_text").html(detailsEditBox);
+            $(".deleteConfirm").hide();
             
             // Delete Checkpoint Button
             $(".deleteButton").click(function (event) {
-                var checkpointID = titleID.replace("#", "").replace("goal", "").replace("checkpoint", "");
-                
-                console.log("Deleting checkpoint: " + checkpointID)
-                
+                $(".deleteButton").hide("fast");
+                $(".deleteConfirm").show("fast");
+            });
+            $("#noButton").click(function (event) {
+                $(".deleteConfirm").hide("fast");
+                $(".deleteButton").show("fast");
+            });
+            $("#yesButton").click(function (event) {
                 var postData = { id: checkpointID };
                 
                 $.post("ajax/delete_checkpoint.php", postData)
@@ -114,34 +136,13 @@ $( document ).ready(function() {
                     if (data == "success") {
                         $(titleID).children(".title").html(titleValue);
                         //console.log($(titleID).children(".title").contents());
-                        $(detailsID).children(".checkpoint_details_text").html(detailsValue);
+                        $(detailsID).children(detailsClass + "_text").html(detailsValue);
                     } else {
                         alert(data);
                     }
                 });
         }
     });
-    
-    /*
-    // Delete Checkpoint Button
-    $(".deleteButton").click(function (event) {
-        var thisButtonID = $(this).attr('id');
-        var checkpointID = thisButtonID.replace("_delete", "").replace("goal", "").replace("checkpoint", "");
-        
-        console.log("Deleting checkpoint: " + checkpointID)
-        
-        var postData = { id: checkpointID };
-        
-        $.post("ajax/delete_checkpoint.php", postData)
-            .done(function (data) {
-                if (data == "success") {
-                    location.reload();
-                } else {
-                    alert(data);
-                }
-            });
-    });
-    */
     
     // Show/hide checkpoint details
     $(".checkpoint_details_snip").click(function (event) {
@@ -175,13 +176,15 @@ $( document ).ready(function() {
     // Show/hide add checkpoint
     $(".addCheckpointButton").click(function (event) {
         var thisButtonID = $(this).attr('id');
-        var checkpointID = "#" + thisButtonID + "_form";
+        var checkpointFormID = "#" + thisButtonID + "_form";
+        var checkpointTitleInputID = "#" + thisButtonID.replace("addCheckpoint", "checkpointTitleInput");
         if ($(this).text() == "+") {
             $(this).html("&ndash;");
         } else {
             $(this).html("+");
         }
-        $(checkpointID).toggle("fast");
+        $(checkpointFormID).toggle("fast");
+        $(checkpointTitleInputID).focus();
     });
     
 });

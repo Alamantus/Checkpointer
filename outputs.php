@@ -19,11 +19,12 @@ function Return_Add_Checkpoint_Form ($parent_id) {
     $checkpoint_form .= '<p>Title:<br />';
     // Using the $parent_id variable because each checkpoint has only one "add checkpoint" form.
     $checkpoint_form .= '<span id="checkpointTitleMessage' . $parent_id . '" class="hidden"><br /></span>';
-    $checkpoint_form .= '<input id="checkpointTitleInput' . $parent_id . '" class="checkpointTitleInput" parentID="' . $parent_id . '" type="text" name="title" value="" length="199"></p>';
+    $checkpoint_form .= '<input id="checkpointTitleInput' . $parent_id . '" class="checkpointTitleInput" parentID="' . $parent_id . '" type="text" name="title" value="" length="199" autocomplete="off"></p>';
     $checkpoint_form .= '<p>Details:<br />';
     $checkpoint_form .= '<textarea rows="4" name="text"></textarea></p>';
     $checkpoint_form .= '<p>Sort Order:<br />';
-    $checkpoint_form .= '<input type="text" name="sort" value="0" length="3"></p>';
+    $checkpoint_form .= '<span id="checkpointSortMessage' . $parent_id . '" class="hidden"><br /></span>';
+    $checkpoint_form .= '<input id="checkpointSortInput' . $parent_id . '" class="checkpointSortInput" parentID="' . $parent_id . '" type="text" name="sort" value="0" length="3" autocomplete="off"></p>';
     $checkpoint_form .= '<input type="hidden" name="parent" value="' . $parent_id .'">';
     $checkpoint_form .= '<p><input type="submit" value="Submit"></p>';
     $checkpoint_form .= '</form>';
@@ -68,11 +69,14 @@ function Output_User_Checkpoints ($id) {
             $checkpoints_output .= "</strong>";
             $checkpoints_output .= "</div>";
             $checkpoints_output .= "<div id='goal". $checkpoint["id"] ."_details' class='goal_details'>";
+            $checkpoints_output .= "<div id='goal". $checkpoint["id"] ."_details_text' class='goal_details_text'>";
             $checkpoints_output .= $checkpoint["text"];
+            $checkpoints_output .= "</div>";
             $checkpoints_output .= "</div>";
             $checkpoints_output .= "<div class='addCheckpointArea'>";
             //$checkpoints_output .= "<span class='addCheckpointButton clickable' id='addCheckpoint". $checkpoint["id"] ."'>Add Checkpoint to \"" . $checkpoint["title"]. "\"</span>";
             $checkpoints_output .= "<div id='addCheckpoint". $checkpoint["id"] ."_form' class='addCheckpointForm'>";
+            $checkpoints_output .= "<h3>Add Checkpoint to \"" . $checkpoint["title"]. "\"</h3>";
             $checkpoints_output .= Return_Add_Checkpoint_Form($checkpoint["id"]);
             $checkpoints_output .= "</div>";
             $checkpoints_output .= "</div>";
@@ -129,6 +133,7 @@ function Get_Children($id) {
             $child_output .= "<div class='addCheckpointArea'>";
             //$child_output .= "<span class='addCheckpointButton clickable' id='addCheckpoint". $child["id"] ."'>Add Checkpoint to \"" . $child["title"]. "\"</span>";
             $child_output .= "<div id='addCheckpoint". $child["id"] ."_form' class='addCheckpointForm'>";
+            $child_output .= "<h3>Add Checkpoint to \"" . $child["title"]. "\"</h3>";
             $child_output .= Return_Add_Checkpoint_Form($child["id"]);
             $child_output .= "</div>";
             $child_output .= "</div>";
