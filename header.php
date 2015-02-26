@@ -58,7 +58,7 @@
             <span id="pwMessage" class="hidden"><br /></span>
             <input type="password" id="pwInput" name="pw" value="" onclick="this.select()">
             <br />
-            <input type="submit" value="Submit" class="hidden">
+            <input type="submit" value="Submit">
             </form>
         </div>
     </div>
