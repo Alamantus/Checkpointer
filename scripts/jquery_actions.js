@@ -41,6 +41,50 @@ $( document ).ready(function() {
         }
     });
     
+    // Update Status
+    StyleCompletedCheckpointsOnLoad();
+    $(".checkpoint_status").change(function () {
+        var checkpointID = $(this).attr('id').replace("_status", "").replace("goal", "").replace("checkpoint", "");
+        var postData = { id: checkpointID, status: $(this).val() };
+        
+        $.post("ajax/update_status.php", postData)
+            .done(function (data) {
+                if (data != "success") {
+                    alert(data);
+                    return;
+                }
+            });
+            
+        if ($(this).val() == 2) {   // Changed to Complete
+            /*$(this).parent().parent().addClass("complete");
+            $(this).parent().parent().find("div").each(function () {
+                $(this).addClass("complete");
+            });*/
+            // Update all children to be completed, too.
+            $(this).parent().parent().find("select").each(function () {
+                $(this).val(2);
+                var childCheckpointID = $(this).attr('id').replace("_status", "").replace("goal", "").replace("checkpoint", "");
+                var childPostData = { id: childCheckpointID, status: $(this).val() };
+        
+                $.post("ajax/update_status.php", childPostData)
+                    .done(function (data) {
+                        if (data != "success") {
+                            alert(data);
+                            return;
+                        }
+                    });
+            });
+            StyleChildCompletedCheckpoints ($(this))
+        } else {
+            $(this).parent().parent().removeClass("complete");
+            $(this).parent().parent().find("div").each(function () {
+                $(this).removeClass("complete");
+            });
+            // Re-check statuses for incorrectly un-styled checkpoints and re-add the class.
+            ReStyleCompletedCheckpoints(false);
+        }
+    });
+    
     // Refresh List Button
     $("#refreshButton").click(function (event) {
         var userID = $(this).children().attr('id');
@@ -195,4 +239,51 @@ function hideElements () {
     $(".checkpoint_details").hide();
     $(".children").hide();
     $(".addCheckpointForm").hide();
+}
+
+function StyleCompletedCheckpointsOnLoad (collapseChildren) {
+    collapseChildren = (typeof collapseChildren != 'undefined') ? collapseChildren : true;
+    $(".checkpoint_status").each(function () {
+        if ($(this).val() == 2) {
+            $(this).parent().parent().addClass("complete");
+            $(this).parent().parent().find("div").each(function () {
+                $(this).addClass("complete");
+            });
+            if (collapseChildren) {
+                // Collapse all children
+                $(this).parent().parent().find(".childCount").each(function (event) {
+                    var thisID = $(this).attr('id');
+                    var childrenID = "#" + thisID.replace("_count", "");
+                    $(this).show("fast");
+                    $(childrenID).hide("fast");
+                });
+            }
+        }
+    });
+}
+function ReStyleCompletedCheckpoints () {
+    $(".checkpoint_status").each(function () {
+        if ($(this).val() == 2) {
+            $(this).parent().parent().addClass("complete");
+            $(this).parent().parent().children().each(function () {
+                $(this).addClass("complete");
+            });
+        }
+    });
+}
+function StyleChildCompletedCheckpoints (element, collapseChildren) {
+    collapseChildren = (typeof collapseChildren != 'undefined') ? collapseChildren : true;
+    element.parent().parent().addClass("complete");
+    element.parent().parent().find("div").each(function () {
+        $(this).addClass("complete");
+    });
+    if (collapseChildren) {
+        // Collapse all children
+        element.parent().parent().find(".childCount").each(function (event) {
+            var thisID = $(this).attr('id');
+            var childrenID = "#" + thisID.replace("_count", "");
+            $(this).show("fast");
+            $(childrenID).hide("fast");
+        });
+    }
 }

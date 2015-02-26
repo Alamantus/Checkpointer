@@ -50,7 +50,7 @@ function Return_Edit_Checkpoint_Form ($id, $title, $text, $sort) {
 
 function Output_User_Checkpoints ($id) {
     //Select 
-    $checkpoints_query = "SELECT * FROM checkpoint WHERE parent=0 AND owner=" . $id . " ORDER BY sort ASC";
+    $checkpoints_query = "SELECT c.*, s.name AS 'status_name' FROM checkpoint c LEFT JOIN status s ON c.status=s.id WHERE parent=0 AND owner=" . $id . " ORDER BY sort ASC";
     $checkpoints = query($checkpoints_query);
     $checkpoints_output = "";
 
@@ -58,8 +58,22 @@ function Output_User_Checkpoints ($id) {
         echo "<div class='root_checkpoint'>";
         // output data of each checkpoint as a list item
         while($checkpoint = fetch_assoc($checkpoints)) {
+            $status_query = "SELECT * FROM status WHERE id > 0 ORDER BY id ASC";
+            $statuses = query($status_query);
+            
             $checkpoints_output .= "<div class='goal'>";
             $checkpoints_output .= "<div id='goal". $checkpoint["id"] ."' class='goal_title'>";
+            $checkpoints_output .= "<select id='goal". $checkpoint["id"] ."_status' class='checkpoint_status'>";
+            if ($statuses != false && num_rows($statuses) > 0) {
+                while($status = fetch_assoc($statuses)) {
+                    $checkpoints_output .= "<option value='". $status["id"] ."'";
+                    if ($checkpoint["status_name"] == $status["name"]) {
+                        $checkpoints_output .= " selected='selected'";
+                    }
+                    $checkpoints_output .= ">". $status["name"] ."</option>";
+                }
+            }
+            $checkpoints_output .= "</select>";
             $checkpoints_output .= "<strong class='title' title='Created ". date("l, F j, Y \a\\t g:i a",$checkpoint["created_date"]) ."'>";
             $checkpoints_output .= $checkpoint["title"];
             $checkpoints_output .= "</strong>";
@@ -95,15 +109,29 @@ function Output_User_Checkpoints ($id) {
     return;
 }
 function Get_Children($id) {
-    $children_query = "SELECT * FROM checkpoint WHERE parent=" . $id . " ORDER BY sort ASC";
-    $children = query($children_query);
+    $children_query = "SELECT c.*, s.name AS 'status_name' FROM checkpoint c LEFT JOIN status s ON c.status=s.id WHERE parent=" . $id . " ORDER BY sort ASC";
+    $children = query($children_query);//Get Statuses
     $child_output = "";
     
     if ($children != false && num_rows($children) > 0) {
         // output data of each checkpoint as a list item
         while($child = fetch_assoc($children)) {
+            $status_query = "SELECT * FROM status WHERE id > 0 ORDER BY id ASC";
+            $statuses = query($status_query);
+            
             $child_output .= "<div class='checkpoint'>";
             $child_output .= "<div id='checkpoint". $child["id"] ."' class='checkpoint_title'>";
+            $child_output .= "<select id='checkpoint". $child["id"] ."_status' class='checkpoint_status'>";
+            if ($statuses != false && num_rows($statuses) > 0) {
+                while($status = fetch_assoc($statuses)) {
+                    $child_output .= "<option value='". $status["id"] ."'";
+                    if ($child["status_name"] == $status["name"]) {
+                        $child_output .= " selected='selected'";
+                    }
+                    $child_output .= ">". $status["name"] ."</option>";
+                }
+            }
+            $child_output .= "</select>";
             $child_output .= "<strong class='title' title='Created ". date("l, F j, Y \a\\t g:i a",$child["created_date"]) ."'>";
             $child_output .= $child["title"];
             $child_output .= "</strong>";

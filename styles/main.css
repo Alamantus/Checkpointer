@@ -155,6 +155,17 @@ form {
 .goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint  .checkpoint {
     background-color: #EEEEEE;
 }
+
+.checkpoint_status, .goal_status {
+    margin: 0px 10px 0px 0px;
+    width: 35px;
+}
+.complete {
+    color: #888888 !important;
+    background-color: #DFDFDF !important;
+    border-color: #333333 !important;
+}
+
 .checkpoint_title, .goal_title {
     position: relative;
     margin: 0px;
