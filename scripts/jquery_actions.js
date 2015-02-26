@@ -125,6 +125,8 @@ $( document ).ready(function() {
             // Need to fix this -- Prevents changing root-level "goals"
             var detailsText = $(detailsID).children(detailsClass + "_text").text();
             var detailsEditBox = "<textarea id='" + detailsID.replace("#", "") + "_editbox' class='detailsEditBox'>" + detailsText + "</textarea>";
+            detailsEditBox += '<p>Sort Order <small>(Numbers Only)</small>:<br />';
+            detailsEditBox += '<input id="' + titleID.replace("#", "") + '_sort_editbox" class="checkpointSortInputEdit" type="text" name="sort" value="' + $(this).attr("sorder") + '" length="3" autocomplete="off"></p>';
             detailsEditBox += "<br /><br /><span id='" + titleID.replace("#", "") + "_delete' class='deleteButton clickable'>Delete?</span>";
             detailsEditBox += "<div class='deleteConfirm'>";
             if (detailsClass.indexOf("goal") >= 0) {
@@ -169,18 +171,21 @@ $( document ).ready(function() {
         } else {
             $(this).text("Edit");
             
+            var userID = $(this).attr('user');
             var checkpointID = titleID.replace("#", "").replace("goal", "").replace("checkpoint", "");
             var titleValue = $(titleID + "_editbox").val();
             var detailsValue = $(detailsID + "_editbox").val();
+            var sortValue = $(titleID + "_sort_editbox").val();
             
-            var postData = { id: checkpointID, title: titleValue, text: detailsValue };
+            var postData = { id: checkpointID, title: titleValue, text: detailsValue, sort: sortValue };
             
             $.post("ajax/update_checkpoint.php", postData)
                 .done(function (data) {
                     if (data == "success") {
-                        $(titleID).children(".title").html(titleValue);
+                        //$(titleID).children(".title").html(titleValue);
                         //console.log($(titleID).children(".title").contents());
-                        $(detailsID).children(detailsClass + "_text").html(detailsValue);
+                        //$(detailsID).children(detailsClass + "_text").html(detailsValue);
+                        location.reload();
                     } else {
                         alert(data);
                     }
@@ -209,12 +214,14 @@ $( document ).ready(function() {
         var childrenID = "#" + thisID.replace("_count", "");
         $(this).hide("fast");
         $(childrenID).show("fast");
+        $.cookie(childrenID.replace("#", ""), 'shown', { expires: 7, path: '/' });
     });
     $(".hideChildrenButton").click(function (event) {
         var thisID = $(this).attr('id');
         var childrenID = "#" + thisID.replace("_hide", "");
         $(childrenID + "_count").show("fast");
         $(childrenID).hide("fast");
+        $.removeCookie(childrenID.replace("#", ""), { path: '/' });
     });
     
     // Show/hide add checkpoint
@@ -237,7 +244,13 @@ function hideElements () {
     $("#loginForm").hide();
     $("#newGoalForm").hide();
     $(".checkpoint_details").hide();
-    $(".children").hide();
+    $(".children").each(function () {
+        if ( typeof $.cookie($(this).attr('id')) == 'undefined' ) {
+            $(this).hide();
+        } else {
+            $("#" + $(this).attr('id') + "_count").hide();
+        }
+    });
     $(".addCheckpointForm").hide();
 }
 

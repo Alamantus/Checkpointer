@@ -158,7 +158,6 @@ form {
 
 .checkpoint_status, .goal_status {
     margin: 0px 10px 0px 0px;
-    width: 35px;
 }
 .complete {
     color: #888888 !important;
@@ -229,13 +228,15 @@ form {
     font-weight: bold;
 }
 
-.titleEditBox {
-    min-width: 25%;
-    max-width: 50%;
-    width: auto;
-}
-.detailsEditBox {
+.titleAddBox, .titleEditBox {
     width: 80%;
+    min-width: 100px;
+    max-width: 300px;
+}
+.detailsAddBox, .detailsEditBox {
+    width: 80%;
+    max-width: 500px;
+    min-width: 150px;
     height: 150px;
 }
 .deleteButton, .deleteConfirm {
