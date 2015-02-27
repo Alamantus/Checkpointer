@@ -10,6 +10,13 @@ form {
     margin: 8px 0px 0px;
 }
 
+ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    min-height: 32px;
+}
+
 #header {
     z-index: 10;
     position: fixed;
@@ -174,7 +181,7 @@ form {
 .checkpoint_title, .goal_title {
     position: relative;
     margin: 0px;
-    padding: 5px 15px;
+    padding: 5px 5px;
     color: black;
     text-decoration: none;
     -webkit-border-top-left-radius: 3px;
@@ -185,6 +192,12 @@ form {
     border-top-right-radius: 3px;
     border-bottom: 1px solid #5555CC;
     background-color: #CFCFCC;
+}
+.handle {
+    margin: 0px 10px 0px 0px;
+    padding: 0px;
+    cursor: move;
+    font-weight: bolder;
 }
 
 .goal_actions, .checkpoint_actions, .checkpoint_details_text {
@@ -201,6 +214,13 @@ form {
     border-bottom: 1px solid #5555CC;
 }
 
+.goal_details_text {
+    position: relative;
+    width: 80%;
+    max-width: 700px;
+    min-width: 250px;
+}
+
 .checkpoint_details_snip {
     font-size: 80%;
     font-weight: bold;
@@ -208,6 +228,10 @@ form {
 
 .children {
     margin: 10px 0px 0px;
+}
+
+ul .childrenList {
+    list-style-type: none;
 }
 
 .addCheckpointArea, .childCount, .hideChildrenButton {
@@ -219,6 +243,8 @@ form {
 .addCheckpointArea {
     color: black;
     text-decoration: none;
+    min-height: 1px;
+    min-width: 90%;
     padding-bottom: 5px;
     backgr/ound-color: #A0A0CD;
 }
@@ -246,6 +272,10 @@ form {
     height: 150px;
 }
 .deleteButton, .deleteConfirm {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    max-width: 150px;
     font-size: 80%;
     font-style: italic;
 }

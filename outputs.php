@@ -22,9 +22,6 @@ function Return_Add_Checkpoint_Form ($parent_id) {
     $checkpoint_form .= '<input id="checkpointTitleInput' . $parent_id . '" class="checkpointTitleInput titleAddBox" parentID="' . $parent_id . '" type="text" name="title" value="" length="199" autocomplete="off"></p>';
     $checkpoint_form .= '<p>Details:<br />';
     $checkpoint_form .= '<textarea rows="4" name="text" class="detailsAddBox"></textarea></p>';
-    $checkpoint_form .= '<p>Sort Order:<br />';
-    $checkpoint_form .= '<span id="checkpointSortMessage' . $parent_id . '" class="hidden"><br /></span>';
-    $checkpoint_form .= '<input id="checkpointSortInput' . $parent_id . '" class="checkpointSortInput" parentID="' . $parent_id . '" type="text" name="sort" value="0" length="3" autocomplete="off"></p>';
     $checkpoint_form .= '<input type="hidden" name="parent" value="' . $parent_id .'">';
     $checkpoint_form .= '<p><input type="submit" value="Submit"></p>';
     $checkpoint_form .= '</form>';
@@ -39,8 +36,6 @@ function Return_Edit_Checkpoint_Form ($id, $title, $text, $sort) {
     $checkpoint_form .= 'Details:<br>';
     $checkpoint_form .= '<textarea name="text">'. $text . '</textarea>';
     $checkpoint_form .= '<br>';
-    $checkpoint_form .= 'Sort Order:<br>';
-    $checkpoint_form .= '<input type="text" name="sort" value="'. $sort . '" length="3">';
     $checkpoint_form .= '<br><input type="hidden" name="id" value="' . $id .'"><br>';
     $checkpoint_form .= '<input type="submit" value="Submit">';
     $checkpoint_form .= '</form>';
@@ -55,7 +50,7 @@ function Output_User_Checkpoints ($id) {
     $checkpoints_output = "";
 
     if ($checkpoints != false && num_rows($checkpoints) > 0) {
-        echo "<div class='root_checkpoint'>";
+        echo "<ul class='root_checkpoints' parentid='0'>";
         // output data of each checkpoint as a list item
         while($checkpoint = fetch_assoc($checkpoints)) {
             $title = easy_crypt('decrypt', $checkpoint['title']);
@@ -64,8 +59,9 @@ function Output_User_Checkpoints ($id) {
             $status_query = "SELECT * FROM status WHERE id > 0 ORDER BY id ASC";
             $statuses = query($status_query);
             
-            $checkpoints_output .= "<div class='goal'>";
+            $checkpoints_output .= "<li class='goal' cpid='". $checkpoint["id"] ."'>";
             $checkpoints_output .= "<div id='goal". $checkpoint["id"] ."' class='goal_title'>";
+            $checkpoints_output .= "<span class='handle'>&#8645;</span>";
             $checkpoints_output .= "<select id='goal". $checkpoint["id"] ."_status' class='checkpoint_status'>";
             if ($statuses != false && num_rows($statuses) > 0) {
                 while($status = fetch_assoc($statuses)) {
@@ -91,7 +87,6 @@ function Output_User_Checkpoints ($id) {
             $checkpoints_output .= "</div>";
             $checkpoints_output .= "</div>";
             $checkpoints_output .= "<div class='addCheckpointArea'>";
-            //$checkpoints_output .= "<span class='addCheckpointButton clickable' id='addCheckpoint". $checkpoint["id"] ."'>Add Checkpoint to \"" . $title. "\"</span>";
             $checkpoints_output .= "<div id='addCheckpoint". $checkpoint["id"] ."_form' class='addCheckpointForm'>";
             $checkpoints_output .= "<h3>Add Checkpoint to \"" . $title. "\"</h3>";
             $checkpoints_output .= Return_Add_Checkpoint_Form($checkpoint["id"]);
@@ -100,15 +95,16 @@ function Output_User_Checkpoints ($id) {
             $checkpoints_output .= Count_Children($checkpoint["id"], "goal", " Checkpoints");   //Inserts its own div section.
             $checkpoints_output .= "<div id='goal". $checkpoint["id"] ."_children' class='children'>";
             $checkpoints_output .= "<span id='goal". $checkpoint["id"] ."_children_hide' class='hideChildrenButton clickable'>Hide Checkpoints</span>";
+            $checkpoints_output .= "<ul id='goal". $checkpoint["id"] ."_children_list' class='childrenList' parentid='". $checkpoint["id"] ."'>";
             $checkpoints_output .= Get_Children($id, $checkpoint["id"]);
+            $checkpoints_output .= "</ul>";
             $checkpoints_output .= "</div>";
-            $checkpoints_output .= "</div>";
+            $checkpoints_output .= "</li>";
         }
-        echo $checkpoints_output . "</div>";
+        echo $checkpoints_output . "</ul>";
     } else {
         echo "<strong>No goals yet!</strong><p>Add a new goal by clicking \"New Goal\" in the header and get started!";
     }
-    //echo "<strong>Add New Goal</strong><br />" . Return_Add_Checkpoint_Form(0);
     return;
 }
 function Get_Children($user_id, $parent_id) {
@@ -125,8 +121,9 @@ function Get_Children($user_id, $parent_id) {
             $status_query = "SELECT * FROM status WHERE id > 0 ORDER BY id ASC";
             $statuses = query($status_query);
             
-            $child_output .= "<div class='checkpoint'>";
+            $child_output .= "<li class='checkpoint' cpid='". $child["id"] ."'>";
             $child_output .= "<div id='checkpoint". $child["id"] ."' class='checkpoint_title'>";
+            $child_output .= "<span class='handle'>&#8645;</span>";
             $child_output .= "<select id='checkpoint". $child["id"] ."_status' class='checkpoint_status'>";
             if ($statuses != false && num_rows($statuses) > 0) {
                 while($status = fetch_assoc($statuses)) {
@@ -165,7 +162,6 @@ function Get_Children($user_id, $parent_id) {
             $child_output .= "</div>";
             $child_output .= "</div>";
             $child_output .= "<div class='addCheckpointArea'>";
-            //$child_output .= "<span class='addCheckpointButton clickable' id='addCheckpoint". $child["id"] ."'>Add Checkpoint to \"" . $title. "\"</span>";
             $child_output .= "<div id='addCheckpoint". $child["id"] ."_form' class='addCheckpointForm'>";
             $child_output .= "<h3>Add Checkpoint to \"" . $title. "\"</h3>";
             $child_output .= Return_Add_Checkpoint_Form($child["id"]);
@@ -176,9 +172,11 @@ function Get_Children($user_id, $parent_id) {
             $child_output .= "<span id='checkpoint". $child["id"] ."_children_hide' class='hideChildrenButton clickable'>";
             $child_output .= "Hide Sub-Checkpoints";
             $child_output .= "</span>";
+            $child_output .= "<ul id='goal". $child["id"] ."_children_list' class='childrenList' parentid='". $child["id"] ."'>";
             $child_output .= Get_Children($user_id, $child["id"]);
+            $child_output .= "</ul>";
             $child_output .= "</div>";
-            $child_output .= "</div>";
+            $child_output .= "</li>";
         }
         return $child_output;
     }
@@ -191,14 +189,13 @@ function Count_Children($id, $id_prefix, $suffix) {
     $children = query($children_query);
     $output = "";
     
+    $output .= "<div id='". $id_prefix . $id ."_children_count' class='childCount clickable'>";
     if ($children != false && num_rows($children) > 0) {
-        $output .= "<div id='". $id_prefix . $id ."_children_count' class='childCount clickable'>";
         $output .= "Show ". num_rows($children) . $suffix;
-        $output .= "</div>";
-        return $output;
+    } else {
+        $output .= "Open ". $suffix . " area for sorting";
     }
-    else {
-        return;
-    }
+    $output .= "</div>";
+    return $output;
 }
 ?>

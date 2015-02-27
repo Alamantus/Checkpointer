@@ -11,7 +11,12 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css">
     
     <!-- Scripts -->
+    <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <!-- jQuery UI -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+    <!-- jQuery cookies plugin -->
     <script src="scripts/jquery.cookie.js"></script>
 </head>
 <body>

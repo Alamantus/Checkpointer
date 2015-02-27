@@ -87,11 +87,6 @@ $( document ).ready(function() {
             validateCheckpoint($(this).attr("parentID"));
         }
     });
-    $(".checkpointSortInput").focusout(function () {
-        if ($(this).is(":visible")) {
-            validateCheckpoint($(this).attr("parentID"));
-        }
-    });
     
     // Update Status
     StyleCompletedCheckpointsOnLoad();
@@ -176,18 +171,16 @@ $( document ).ready(function() {
             var titleEditBox = "<input type='text' id='" + titleID.replace("#", "") + "_editbox' class='titleEditBox' name='title' value='" + titleText + "' length='199'>";
             var detailsText = $(detailsID).children(detailsClass + "_text").text();
             var detailsEditBox = "<textarea id='" + detailsID.replace("#", "") + "_editbox' class='detailsEditBox'>" + detailsText + "</textarea>";
-            detailsEditBox += '<p>Sort Order <small>(Numbers Only)</small>:<br />';
-            detailsEditBox += '<input id="' + titleID.replace("#", "") + '_sort_editbox" class="checkpointSortInputEdit" type="text" name="sort" value="' + $(this).attr("sorder") + '" length="3" autocomplete="off"></p>';
-            detailsEditBox += "<br /><br /><span id='" + titleID.replace("#", "") + "_delete' class='deleteButton clickable'>Delete?</span>";
-            detailsEditBox += "<div class='deleteConfirm'>";
+            detailsEditBox += "<span id='" + titleID.replace("#", "") + "_delete' class='deleteButton clickable'>Delete?</span>";
+            detailsEditBox += "<div id='" + titleID.replace("#", "") + "_confirm' class='deleteConfirm'>";
             if (detailsClass.indexOf("goal") >= 0) {
                 detailsEditBox += "Are you sure you want to delete this goal and all its checkpoints?<br />";
             } else {
                 detailsEditBox += "Are you sure you want to delete this checkpoint and all its sub-checkpoints?<br />";
             }
-            detailsEditBox += "<span id='yesButton' class='clickable'>Yes</span>";
+            detailsEditBox += "<span id='" + titleID.replace("#", "") + "_yesButton' class='clickable'>Yes</span>";
             detailsEditBox += "&nbsp;&nbsp;&nbsp;&nbsp;";
-            detailsEditBox += "<span id='noButton' class='clickable'>No</span>";
+            detailsEditBox += "<span id='" + titleID.replace("#", "") + "_noButton' class='clickable'>No</span>";
             detailsEditBox += "</div>";
             
             $(titleID).children(".title").html(titleEditBox);
@@ -195,28 +188,33 @@ $( document ).ready(function() {
             $(detailsSnipID).hide("fast");
             $(detailsID).show("fast");
             $(detailsID).children(detailsClass + "_text").html(detailsEditBox);
-            $(".deleteConfirm").hide();
+            $("#" + titleID.replace("#", "") + "_confirm").hide();
             
             // Delete Checkpoint Button
-            $(".deleteButton").click(function (event) {
-                $(".deleteButton").hide("fast");
-                $(".deleteConfirm").show("fast");
+            $("#" + titleID.replace("#", "") + "_delete").click(function (event) {
+                $("#" + titleID.replace("#", "") + "_delete").hide("fast");
+                $("#" + titleID.replace("#", "") + "_confirm").show("fast");
             });
-            $("#noButton").click(function (event) {
-                $(".deleteConfirm").hide("fast");
-                $(".deleteButton").show("fast");
+            $("#" + titleID.replace("#", "") + "_noButton").click(function (event) {
+                $("#" + titleID.replace("#", "") + "_confirm").hide("fast");
+                $("#" + titleID.replace("#", "") + "_delete").show("fast");
             });
-            $("#yesButton").click(function (event) {
-                var postData = { id: checkpointID };
-                
-                $.post("ajax/delete_checkpoint.php", postData)
-                    .done(function (data) {
-                        if (data == "success") {
-                            location.reload();
-                        } else {
-                            alert(data);
-                        }
-                    });
+            $("#" + titleID.replace("#", "") + "_yesButton").click(function (event) {
+                var areYouSure = confirm("This deletes this checkpoint and any sub-checkpoints attached to it, and it is impossible to retrieve them! Are you sure you want to delete?");
+                if (areYouSure == true) {
+                    var postData = { id: checkpointID };
+                    $.post("ajax/delete_checkpoint.php", postData)
+                        .done(function (data) {
+                            if (data == "success") {
+                                location.reload();
+                            } else {
+                                alert(data);
+                            }
+                        });
+                } else {
+                    $("#" + titleID.replace("#", "") + "_confirm").hide("fast");
+                    $("#" + titleID.replace("#", "") + "_delete").show("fast");
+                }
             });
         
         } else {
@@ -226,9 +224,8 @@ $( document ).ready(function() {
             var checkpointID = titleID.replace("#", "").replace("goal", "").replace("checkpoint", "");
             var titleValue = $(titleID + "_editbox").val();
             var detailsValue = $(detailsID + "_editbox").val();
-            var sortValue = $(titleID + "_sort_editbox").val();
             
-            var postData = { id: checkpointID, title: titleValue, text: detailsValue, sort: sortValue };
+            var postData = { id: checkpointID, title: titleValue, text: detailsValue };
             
             $.post("ajax/update_checkpoint.php", postData)
                 .done(function (data) {
@@ -300,7 +297,11 @@ function hideElements () {
         if ( typeof $.cookie($(this).attr('id')) == 'undefined' ) {
             $(this).hide();
         } else {
-            $("#" + $(this).attr('id') + "_count").hide();
+            if ($("#" + $(this).attr('id') + "_count").text().indexOf("sorting") >= 0) {
+                $(this).hide();
+            } else {
+                $("#" + $(this).attr('id') + "_count").hide();
+            }
         }
     });
     $(".addCheckpointForm").hide();

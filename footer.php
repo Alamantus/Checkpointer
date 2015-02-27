@@ -6,5 +6,6 @@
 </div>
 <script src="scripts/validation.js"></script>
 <script src="scripts/jquery_actions.js"></script>
+<script src="scripts/jquery_ui_actions.js"></script>
 </body>
 </html>
