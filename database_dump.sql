@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 27, 2015 at 12:51 AM
+-- Generation Time: Feb 27, 2015 at 08:17 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `checkpoint` (
   `created_date` varchar(30) DEFAULT NULL,
   `last_modified` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -75,8 +75,11 @@ INSERT INTO `status` (`id`, `name`, `html_display`) VALUES
 
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `password` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `created_date` varchar(30) DEFAULT NULL,
+  `last_active` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
@@ -85,8 +88,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `password`) VALUES
-(1, 'test', 'teH0wLIpW0gyQ');
+INSERT INTO `user` (`id`, `name`, `password`, `email`, `created_date`, `last_active`) VALUES
+(1, 'test', 'teH0wLIpW0gyQ', '', NULL, '1425016747');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
