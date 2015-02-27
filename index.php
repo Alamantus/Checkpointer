@@ -23,6 +23,9 @@ elseif ($action == "login") {
 elseif ($action == "logout") {
     include_once('templates/logout.php');
 }
+elseif ($action == "createaccount") {
+    include_once('templates/create_account.php');
+}
 elseif (!isset($_SESSION['user'])) {
 ?>
     <strong>You are not logged in!</strong>
@@ -44,8 +47,17 @@ elseif (!isset($_SESSION['user'])) {
 <?php
     //include("templates/lorem.php");
 }
-else {  //just show checkpoints
+else {
     if ($current_user) {
+        // Update Last Active
+        $update_sql = "UPDATE user SET last_active= " . time() . " WHERE id=" . $current_user . ";";
+        if (query($update_sql)) {
+            //success!
+        } else {
+            echo "Error: " . $update_sql . "<br>" . mysqli_error(connection());
+        }
+        
+        // And show checkpoints
         Output_User_Checkpoints($current_user);
     } else {
         echo "You are not logged in.";

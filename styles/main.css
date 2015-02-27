@@ -57,15 +57,12 @@ form {
     width: 80px;
     font-weight: bold;
 }
-/*#newGoalButton, #refreshButton, #loginButton, #logOutButton {
-    font-weight: bold;
-}*/
-#cancelNewGoalButton, #cancelLoginButton {
+#cancelNewGoalButton, #cancelLoginButton, #cancelCreateAccountButton {
     position: absolute;
     right: 15px;
     top: 5px;
 }
-#newGoalForm, #loginForm {
+#newGoalForm, #loginForm, #createAccountForm {
     position: relative;
     float: right;
     top: 22px;

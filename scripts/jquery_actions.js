@@ -20,6 +20,58 @@ $( document ).ready(function() {
         }
     });
     
+    // Create Account form
+    $("#createAccountButton").click(function (event) {
+        $("#createAccountForm").slideDown("fast");
+        $("#nameInput").focus();
+    });
+    $("#cancelLoginButton").click(function (event) {
+        $("#createAccountForm").slideUp("fast");
+    });
+    $("#createAccountUsername").focusout(function () {
+        if ($(this).is(":visible")) {
+            var usernameValue = $(this).val();
+            if (usernameValue.length > 1) {
+                var usernamePostData = { username: usernameValue };
+                
+                $.post("ajax/check_username.php", usernamePostData)
+                    .done(function (data) {
+                        if (data != "No User") {
+                            $("#createAccountUsernameMesssage").text(usernameValue + " is already taken.");
+                            $("#createAccountUsernameMesssage").attr("class", "invalid");
+                        } else {
+                            $("#createAccountUsernameMesssage").text("");
+                            $("#createAccountUsernameMesssage").attr("class", "hidden");
+                        }
+                    });
+            } else {
+                $("#createAccountUsernameMesssage").text("Must be more than 1 character long.");
+                $("#createAccountUsernameMesssage").attr("class", "invalid");
+            }
+        }
+    });
+    $("#createAccountPassword").focusout(function () {
+        if ($(this).is(":visible")) {
+            var pwValue = $(this).val();
+            if (pwValue.length >= 4) {
+                $("#createAccountPasswordMesssage").text("");
+                $("#createAccountPasswordMesssage").attr("class", "hidden");
+            } else {
+                $("#createAccountPasswordMesssage").text("Must be at least 4 characters long.");
+                $("#createAccountPasswordMesssage").attr("class", "invalid");
+            }
+        }
+    });
+    $("#createAccountForm").submit(function () {
+        if ($(this).is(":visible")) {
+            if ($("#createAccountUsernameMesssage").text() == "" && $("#createAccountPasswordMesssage").text() == "") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+    
     // New Goal form
     $("#newGoalButton").click(function (event) {
         $("#newGoalForm").slideDown("fast");
@@ -241,6 +293,7 @@ $( document ).ready(function() {
 });
 
 function hideElements () {
+    $("#createAccountForm").hide();
     $("#loginForm").hide();
     $("#newGoalForm").hide();
     $(".checkpoint_details").hide();

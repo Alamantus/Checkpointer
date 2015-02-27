@@ -64,6 +64,22 @@
             </form>
         </div>
     </div>
+    <div class="headerButton">
+        <span id="createAccountButton" class="clickable">Create Account</span>
+        <div id="createAccountForm">
+            <span id="cancelCreateAccountButton" class="clickable">Cancel</span>
+            <form name="createAccount" method="post" action="?action=createaccount">
+            Username:<br />
+            <span id="createAccountUsernameMesssage" class="hidden"><br /></span>
+            <input type="text" id="createAccountUsername" name="name" value="" onclick="this.select()" length="29">
+            <br />
+            Password:<br />
+            <span id="createAccountPasswordMesssage" class="hidden"><br /></span>
+            <input type="password" id="createAccountPassword" name="pw" value="" onclick="this.select()">
+            <p><input type="submit" value="Submit"></p>
+            </form>
+        </div>
+    </div>
     <?php
     }
     ?>
