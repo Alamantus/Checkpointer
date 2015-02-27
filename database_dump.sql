@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 27, 2015 at 08:17 AM
+-- Generation Time: Feb 27, 2015 at 03:31 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `checkpoint` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(200) NOT NULL,
+  `title` text NOT NULL,
   `text` text NOT NULL,
   `parent` int(11) DEFAULT '0',
   `sort` float NOT NULL DEFAULT '0',
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `checkpoint` (
   `created_date` varchar(30) DEFAULT NULL,
   `last_modified` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `password`, `email`, `created_date`, `last_active`) VALUES
-(1, 'test', 'teH0wLIpW0gyQ', '', NULL, '1425016747');
+(1, 'test', 'teH0wLIpW0gyQ', '', NULL, '1425047374');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -173,8 +173,7 @@ $( document ).ready(function() {
             $(this).text("Done");
             
             var titleText = $(titleID).children(".title").text();
-            var titleEditBox = "<textarea id='" + titleID.replace("#", "") + "_editbox' class='titleEditBox'>" + titleText + "</textarea>";
-            // Need to fix this -- Prevents changing root-level "goals"
+            var titleEditBox = "<input type='text' id='" + titleID.replace("#", "") + "_editbox' class='titleEditBox' name='title' value='" + titleText + "' length='199'>";
             var detailsText = $(detailsID).children(detailsClass + "_text").text();
             var detailsEditBox = "<textarea id='" + detailsID.replace("#", "") + "_editbox' class='detailsEditBox'>" + detailsText + "</textarea>";
             detailsEditBox += '<p>Sort Order <small>(Numbers Only)</small>:<br />';

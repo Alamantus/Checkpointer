@@ -1,6 +1,8 @@
 <?php
 
 define("SITE_NAME", "Checkpointer");
+define("SITE_CATCHPHRASE", "Checkpoints on the way to your goal.");
+define("SITE_KEYWORDS", "goals,checkpoint,milestone,checklist,manage");
 
 function connection() {
     $servername = "localhost";

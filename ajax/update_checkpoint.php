@@ -8,7 +8,7 @@ if (isset($_POST["id"])) {
     $text = str_replace("\\", "&#92;", str_replace("\"", "&#34;", str_replace("'", "&#39;", htmlspecialchars($_POST["text"]))));
     $sort = is_numeric($_POST["sort"]) ? $_POST["sort"] : 0;
     
-    $update_sql = "UPDATE checkpoint SET title='" . $title . "', text='" . $text . "', sort=". $sort .", last_modified= " . time() . " WHERE id=" . $id . ";";
+    $update_sql = "UPDATE checkpoint SET title='" . easy_crypt('encrypt', $title) . "', text='" . easy_crypt('encrypt', $text) . "', sort=". $sort .", last_modified= " . time() . " WHERE id=" . $id . ";";
     
     if (query($update_sql)) {
         echo "success";

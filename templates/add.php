@@ -8,7 +8,7 @@ if (isset($_POST["title"])) {
     $owner = isset($_SESSION["user"]) ? $_SESSION["user"] : 0;
     
     $insert_sql = "INSERT INTO checkpoint (title, text, parent, sort, status, owner, created_date) ";
-    $insert_sql .= "VALUES ('" . $title . "', '" . $text . "', " . $parent . ", " . $sort . ", " . $status . ", " . $owner . ", " . time() . ");";
+    $insert_sql .= "VALUES ('" . easy_crypt('encrypt', $title) . "', '" . easy_crypt('encrypt', $text) . "', " . $parent . ", " . $sort . ", " . $status . ", " . $owner . ", " . time() . ");";
     if (query($insert_sql)) {
         echo "New record created successfully";
         header('Location: .');

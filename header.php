@@ -1,7 +1,8 @@
 <html>
 <head>
     <title><?php echo SITE_NAME; ?></title>
-    
+    <meta name="description" content="<?php echo SITE_CATCHPHRASE; ?>">
+    <meta name="keywords" content="<?php echo SITE_KEYWORDS; ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="shortcut icon" href="favicon.ico">
