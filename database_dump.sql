@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 27, 2015 at 03:31 PM
+-- Generation Time: Feb 27, 2015 at 10:08 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `password`, `email`, `created_date`, `last_active`) VALUES
-(1, 'test', 'teH0wLIpW0gyQ', '', NULL, '1425047374');
+(1, 'test', 'teH0wLIpW0gyQ', '', NULL, '1425070751');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

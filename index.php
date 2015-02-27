@@ -6,15 +6,19 @@ session_start();
 $current_user = isset($_SESSION['user']) ? $_SESSION['user'] : 0;
 
 $action = isset($_GET["action"]) ? $_GET["action"] : false;
+$page = isset($_GET["page"]) ? $_GET["page"] : false;
 $message = isset($_POST["message"]) ? $_POST["message"] : "";
 $view_user = isset($_GET["user"]) ? $_GET["user"] : false;
 
 include('header.php');
 
-if ($action == "about") {
+if ($page == "about") {
     include_once('templates/about.php');
 }
-if ($action == "add") {
+elseif ($page == "terms") {
+    include_once('templates/terms.php');
+}
+elseif ($action == "add") {
     include_once('templates/add.php');
 }
 elseif ($action == "edit") {

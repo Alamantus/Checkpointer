@@ -1,4 +1,4 @@
-<div id="aboutPage">
+<div id="aboutPage" class="infoPage">
 <h2>About</h2>
 <p>Checkpointer is a nested checklist application that is intended to help you reach your larger goals by breaking them down into smaller checkpoints that you can reach more easily.</p>
 <p>The original inspiration for this project was this video from the entertaining and insightful people over at Extra Credits:</p>

@@ -34,24 +34,8 @@
         <div id="newGoalForm">
             <span id="cancelNewGoalButton" class="clickable">Cancel</span>
             <?php echo Return_Add_Checkpoint_Form (0); ?>
-            <!--<form method="post" action="?action=add" onsubmit="return validateMilestone()">
-            <p>Title:<br />
-            <span id="newTitleMessage" class="hidden"><br /></span>
-            <input id="newTitleInput" type="text" name="title" value="" length="199" autocomplete="off"></p>
-            <p>Details:<br />
-            <textarea rows="4" name="text"></textarea></p>
-            <p>Sort Order:<br />
-            <span id="newSortMessage" class="hidden"><br /></span>
-            <input id="newSortInput" type="text" name="sort" value="0" length="3" autocomplete="off"></p>
-            <input type="hidden" name="parent" value="0">
-            <p><input type="submit" value="Submit"></p>
-            </form>-->
         </div>
     </div>
-    
-    <!--<div id="refreshButton" class="headerButton">
-        <span id="<?php echo $_SESSION['user']; ?>" class="clickable">Refresh</span>
-    </div>-->
     
     <?php
     } else {

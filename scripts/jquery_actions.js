@@ -25,7 +25,7 @@ $( document ).ready(function() {
         $("#createAccountForm").slideDown("fast");
         $("#nameInput").focus();
     });
-    $("#cancelLoginButton").click(function (event) {
+    $("#cancelCreateAccountButton").click(function (event) {
         $("#createAccountForm").slideUp("fast");
     });
     $("#createAccountUsername").focusout(function () {
@@ -200,7 +200,7 @@ $( document ).ready(function() {
                 $("#" + titleID.replace("#", "") + "_delete").show("fast");
             });
             $("#" + titleID.replace("#", "") + "_yesButton").click(function (event) {
-                var areYouSure = confirm("This deletes this checkpoint and any sub-checkpoints attached to it, and it is impossible to retrieve them! Are you sure you want to delete?");
+                var areYouSure = confirm("This deletes this checkpoint and any sub-checkpoints attached to it, and it is impossible to retrieve them!\n\nAre you sure you want to delete?");
                 if (areYouSure == true) {
                     var postData = { id: checkpointID };
                     $.post("ajax/delete_checkpoint.php", postData)
