@@ -5,6 +5,7 @@ var draggedItemOldValues;
 $(".root_checkpoints, .childrenList").sortable({
     handle: '.handle',
     connectWith: ".root_checkpoints, .childrenList",
+    placeholder: "sort-placeholder-highlight",
     dropOnEmpty: true,
     start: function(event, ui) {
         draggedItem = ui.item;

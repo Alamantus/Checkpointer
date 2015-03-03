@@ -1,9 +1,16 @@
 <html>
 <head>
-    <title><?php echo SITE_NAME; ?></title>
+    <title><?php echo SITE_NAME; ?> &#945;</title>
     <meta name="description" content="<?php echo SITE_CATCHPHRASE; ?>">
     <meta name="keywords" content="<?php echo SITE_KEYWORDS; ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta property="og:title" content="<?php echo SITE_NAME; ?> &ndash; Nested Goal Management">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="www.checkpointer.tk">
+    <meta property="og:url" content="http://www.checkpointer.tk/index.php">
+    <meta property="og:description" content="<?php echo SITE_CATCHPHRASE; ?> (Alpha Release)">
+    <meta property="og:image" content="http://www.checkpointer.tk/alpha_logo.jpg">
     
     <link rel="shortcut icon" href="favicon.ico">
     
@@ -16,24 +23,26 @@
     <!-- jQuery UI -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+    <!-- jQuery UI TouchPinch Plugin-->
+    <script src="scripts/jquery.ui.touch-punch.min.js"></script>
     <!-- jQuery cookies plugin -->
     <script src="scripts/jquery.cookie.js"></script>
 </head>
 <body>
 <div id="header">
-    <a href="."><h1 id="heading">Checkpointer</h1></a>
+    <a href="."><h1 id="heading">Checkpointer &#945;</h1></a>
     <?php
     if (isset($_SESSION["user"])) {
     ?>
     <div class="headerButton">
-        <span id="logOutButton"><a href="?action=logout">Log Out</a></span>
+        <span id="logOutButton" title="Logged in as <?php echo Get_Username($_SESSION['user']); ?>"><a href="?action=logout">Log Out</a></span>
     </div>
     
     <div class="headerButton">
         <span id="newGoalButton" class="clickable">New Goal</span>
         <div id="newGoalForm">
             <span id="cancelNewGoalButton" class="clickable">Cancel</span>
-            <?php echo Return_Add_Checkpoint_Form (0); ?>
+            <?php echo Return_Add_Checkpoint_Form (0, ""); ?>
         </div>
     </div>
     

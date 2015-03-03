@@ -36,9 +36,15 @@ elseif ($action == "createaccount") {
 elseif (!$action) {
     if (!isset($_SESSION['user'])) {
 ?>
-        <strong>You are not logged in!</strong>
+        <div  class="infoPage">
+        <h2>Reach your goals one checkpoint at a time!</h2>
+        <p><strong>"How do you eat an elephant?"</strong><br />
+        <em>"One bite at a time."</em></p>
+        <p>Dividing up big projects into smaller tasks makes it easier to finish by keeping you from getting discouraged along the way. Checkpointer makes it easy for you to break down your your goals into easily manageable checkpoints that you can complete one at a time. As you work toward your goal, you can see all the checkpoints you've reached along the way to encourage you to keep going!</p>
+        <p style="text-align:center;"><strong><em>Got an overwhelming project ahead of you?<br />Get started with Checkpointer now so you can start working toward completion today!</em></strong></p>
+        </div>
 <?php
-        Show_Login_Form("");
+        //Show_Login_Form("");
     }
     else {
         // Update Last Active

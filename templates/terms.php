@@ -1,6 +1,6 @@
 <div id="termsPage" class="infoPage">
 <h2>
-	Checkpointer Web Site Terms and Conditions of Use
+	Checkpointer Web Site (Alpha Release) Terms and Conditions of Use
 </h2>
 
 <h3>

@@ -14,7 +14,11 @@ function Show_Login_Form ($name) {
     echo $login_form;
 }
 
-function Return_Add_Checkpoint_Form ($parent_id) {
+function Return_Add_Checkpoint_Form ($parent_id, $parent_type) {
+    /*
+     * $parent_id = the checkpoint id.
+     * $parent_type = goal or checkpoint
+     */
     $checkpoint_form = '<form method="post" action="?action=add" onsubmit="return validateCheckpoint(' . $parent_id . ')">';
     $checkpoint_form .= '<p>Title:<br />';
     // Using the $parent_id variable because each checkpoint has only one "add checkpoint" form.
@@ -23,6 +27,7 @@ function Return_Add_Checkpoint_Form ($parent_id) {
     $checkpoint_form .= '<p>Details:<br />';
     $checkpoint_form .= '<textarea rows="4" name="text" class="detailsAddBox"></textarea></p>';
     $checkpoint_form .= '<input type="hidden" name="parent" value="' . $parent_id .'">';
+    $checkpoint_form .= '<input type="hidden" name="parentType" value="' . $parent_type .'">';
     $checkpoint_form .= '<p><input type="submit" value="Submit"></p>';
     $checkpoint_form .= '</form>';
     
@@ -89,7 +94,7 @@ function Output_User_Checkpoints ($id) {
             $checkpoints_output .= "<div class='addCheckpointArea'>";
             $checkpoints_output .= "<div id='addCheckpoint". $checkpoint["id"] ."_form' class='addCheckpointForm'>";
             $checkpoints_output .= "<h3>Add Checkpoint to \"" . $title. "\"</h3>";
-            $checkpoints_output .= Return_Add_Checkpoint_Form($checkpoint["id"]);
+            $checkpoints_output .= Return_Add_Checkpoint_Form($checkpoint["id"], "goal");
             $checkpoints_output .= "</div>";
             $checkpoints_output .= "</div>";
             $checkpoints_output .= Count_Children($checkpoint["id"], "goal", " Checkpoints");   //Inserts its own div section.
@@ -164,7 +169,7 @@ function Get_Children($user_id, $parent_id) {
             $child_output .= "<div class='addCheckpointArea'>";
             $child_output .= "<div id='addCheckpoint". $child["id"] ."_form' class='addCheckpointForm'>";
             $child_output .= "<h3>Add Checkpoint to \"" . $title. "\"</h3>";
-            $child_output .= Return_Add_Checkpoint_Form($child["id"]);
+            $child_output .= Return_Add_Checkpoint_Form($child["id"], "checkpoint");
             $child_output .= "</div>";
             $child_output .= "</div>";
             $child_output .= Count_Children($child["id"], "checkpoint", " Sub-Checkpoints");  //Inserts its own div section.

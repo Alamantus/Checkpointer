@@ -3,10 +3,12 @@ $( document ).ready(function() {
     
     // Login form
     $("#loginButton").click(function (event) {
+        $(this).parent().css("background-color", "#D9D9FF");
         $("#loginForm").slideDown("fast");
         $("#nameInput").focus();
     });
-    $("#cancelLoginButton").click(function (event) {
+    $("#cancelLoginButton, #createAccountButton").click(function (event) {
+        $("#loginButton").parent().css("background-color", "");
         $("#loginForm").slideUp("fast");
     });
     $("#nameInput").focusout(function () {
@@ -22,10 +24,12 @@ $( document ).ready(function() {
     
     // Create Account form
     $("#createAccountButton").click(function (event) {
+        $(this).parent().css("background-color", "#D9D9FF");
         $("#createAccountForm").slideDown("fast");
         $("#nameInput").focus();
     });
-    $("#cancelCreateAccountButton").click(function (event) {
+    $("#cancelCreateAccountButton, #loginButton").click(function (event) {
+        $("#createAccountButton").parent().css("background-color", "");
         $("#createAccountForm").slideUp("fast");
     });
     $("#createAccountUsername").focusout(function () {
@@ -74,10 +78,12 @@ $( document ).ready(function() {
     
     // New Goal form
     $("#newGoalButton").click(function (event) {
+        $(this).parent().css("background-color", "#D9D9FF");
         $("#newGoalForm").slideDown("fast");
         $("#newTitleInput").focus();
     });
     $("#cancelNewGoalButton").click(function (event) {
+        $("#newGoalButton").parent().css("background-color", "");
         $("#newGoalForm").slideUp("fast");
     });
     
@@ -89,7 +95,7 @@ $( document ).ready(function() {
     });
     
     // Update Status
-    StyleCompletedCheckpointsOnLoad();
+    StyleCheckpointStatusOnLoad();
     $(".checkpoint_status").change(function () {
         var checkpointID = $(this).attr('id').replace("_status", "").replace("goal", "").replace("checkpoint", "");
         var postData = { id: checkpointID, status: $(this).val() };
@@ -103,10 +109,6 @@ $( document ).ready(function() {
             });
             
         if ($(this).val() == 2) {   // Changed to Complete
-            /*$(this).parent().parent().addClass("complete");
-            $(this).parent().parent().find("div").each(function () {
-                $(this).addClass("complete");
-            });*/
             // Update all children to be completed, too.
             $(this).parent().parent().find("select").each(function () {
                 $(this).val(2);
@@ -121,14 +123,30 @@ $( document ).ready(function() {
                         }
                     });
             });
-            StyleChildCompletedCheckpoints ($(this))
+            StyleChildCheckpointStatus ($(this))
+        } else if ($(this).val() == 3) {   // Changed to Cancelled
+            // Update all children to be completed, too.
+            $(this).parent().parent().find("select").each(function () {
+                $(this).val(3);
+                var childCheckpointID = $(this).attr('id').replace("_status", "").replace("goal", "").replace("checkpoint", "");
+                var childPostData = { id: childCheckpointID, status: $(this).val() };
+        
+                $.post("ajax/update_status.php", childPostData)
+                    .done(function (data) {
+                        if (data != "success") {
+                            alert(data);
+                            return;
+                        }
+                    });
+            });
+            StyleChildCheckpointStatus ($(this))
         } else {
             $(this).parent().parent().removeClass("complete");
             $(this).parent().parent().find("div").each(function () {
                 $(this).removeClass("complete");
             });
             // Re-check statuses for incorrectly un-styled checkpoints and re-add the class.
-            ReStyleCompletedCheckpoints(false);
+            ReStyleCheckpointStatus(false);
         }
     });
     
@@ -286,6 +304,19 @@ $( document ).ready(function() {
         $(checkpointTitleInputID).focus();
     });
     
+    //If the page is opening after a checkpoint addition,
+    //scroll the page up to see checkpoint
+    if (typeof $.cookie("anchor") != "undefined")
+    {
+        var scrollTo = $($.cookie("anchor")).offset().top;
+        console.log(window.innerWidth);
+        if (window.innerWidth > 600) {
+            scrollTo -= $("#header").outerHeight(true);
+        }
+        $("body").scrollTop(scrollTo);
+        $.removeCookie("anchor");
+    }
+    
 });
 
 function hideElements () {
@@ -307,7 +338,7 @@ function hideElements () {
     $(".addCheckpointForm").hide();
 }
 
-function StyleCompletedCheckpointsOnLoad (collapseChildren) {
+function StyleCheckpointStatusOnLoad (collapseChildren) {
     collapseChildren = (typeof collapseChildren != 'undefined') ? collapseChildren : true;
     $(".checkpoint_status").each(function () {
         if ($(this).val() == 2) {
@@ -315,6 +346,13 @@ function StyleCompletedCheckpointsOnLoad (collapseChildren) {
             $(this).parent().parent().find("div").each(function () {
                 $(this).addClass("complete");
             });
+        } else if ($(this).val() == 3) {
+            $(this).parent().parent().addClass("cancelled");
+            $(this).parent().parent().find("div").each(function () {
+                $(this).addClass("cancelled");
+            });
+        }
+        if ($(this).val() == 2 || $(this).val() == 3) {
             if (collapseChildren) {
                 // Collapse all children
                 $(this).parent().parent().find(".childCount").each(function (event) {
@@ -327,22 +365,34 @@ function StyleCompletedCheckpointsOnLoad (collapseChildren) {
         }
     });
 }
-function ReStyleCompletedCheckpoints () {
+function ReStyleCheckpointsStatus () {
     $(".checkpoint_status").each(function () {
         if ($(this).val() == 2) {
             $(this).parent().parent().addClass("complete");
             $(this).parent().parent().children().each(function () {
                 $(this).addClass("complete");
             });
+        } else if ($(this).val() == 3) {
+            $(this).parent().parent().addClass("cancelled");
+            $(this).parent().parent().children().each(function () {
+                $(this).addClass("cancelled");
+            });
         }
     });
 }
-function StyleChildCompletedCheckpoints (element, collapseChildren) {
+function StyleChildCheckpointStatus (element, collapseChildren) {
     collapseChildren = (typeof collapseChildren != 'undefined') ? collapseChildren : true;
-    element.parent().parent().addClass("complete");
-    element.parent().parent().find("div").each(function () {
-        $(this).addClass("complete");
-    });
+    if (element.val() == 2) {
+        element.parent().parent().addClass("complete");
+        element.parent().parent().find("div").each(function () {
+            $(this).addClass("complete");
+        });
+    } else if (element.val() == 3) {
+        element.parent().parent().addClass("cancelled");
+        element.parent().parent().find("div").each(function () {
+            $(this).addClass("cancelled");
+        });
+    }
     if (collapseChildren) {
         // Collapse all children
         element.parent().parent().find(".childCount").each(function (event) {

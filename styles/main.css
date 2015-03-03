@@ -23,8 +23,11 @@ ul.root_checkpoints, ul.childrenList {
     width: 100%;
     height: 60px;
     margin: 0px;
-    padding: 0px;
+    padding: 10px;
     background: #B9B9DD;
+    -webkit-box-shadow: 0px 1px 5px 1px rgba(95,95,95,1);
+    -moz-box-shadow: 0px 1px 5px 1px rgba(95,95,95,1);
+    box-shadow: 0px 1px 5px 1px rgba(95,95,95,1);
 }
 
 #heading {
@@ -40,10 +43,10 @@ ul.root_checkpoints, ul.childrenList {
 #page {
     z-index: 0;
     position: relative;
-    width: 95%;
-    top: 60px;
+    width: 100%;
+    top: 80px;
     margin: 0px 0px 25px;
-    padding: 15px 25px;
+    padding: 1px 0px 15px;
     background: #FFFFFF;
 }
 
@@ -57,6 +60,10 @@ ul.root_checkpoints, ul.childrenList {
     padding: 10px;
     background: #BFBFBF;
     font-size: 80%;
+    line-height: 80%;
+    -webkit-box-shadow: 0px 3px 5px 1px rgba(95,95,95,1);
+    -moz-box-shadow: 0px -1px 5px 1px rgba(95,95,95,1);
+    box-shadow: 0px -1px 5px 1px rgba(95,95,95,1);
 }
 
 .headerButton {
@@ -64,6 +71,8 @@ ul.root_checkpoints, ul.childrenList {
     margin: 20px;
     width: 80px;
     font-weight: bold;
+    padding: 5px 0px 0px 5px;
+    border-radius: 5px;
 }
 #cancelNewGoalButton, #cancelLoginButton, #cancelCreateAccountButton {
     position: absolute;
@@ -82,6 +91,12 @@ ul.root_checkpoints, ul.childrenList {
     border-radius: 3px;
     background-color: #D9D9FF;
 }
+#newGoalForm, #loginForm {
+    top: 22px;
+}
+#createAccountForm {
+    top: 0px;
+}
 
 .hideDetailsButton, .editButton {
     margin: 5px 10px;
@@ -89,8 +104,10 @@ ul.root_checkpoints, ul.childrenList {
 }
 
 .footerLink {
-    float: left;
-    margin-left: 20px;
+    position: relative;
+    display: inline-block;
+    /* float: left; */
+    margin: 0px 0px 0px 20px;
 }
 #copyright {
     float: right;
@@ -99,8 +116,13 @@ ul.root_checkpoints, ul.childrenList {
 
 .infoPage {
     width: 75%;
-    min-width: 250px;
+    min-width: 200px;
     max-width: 700px;
+    padding: 27px;
+    background-color: #D9D9FF;
+    -webkit-box-shadow: 3px 3px 5px 1px rgba(95,95,95,1);
+    -moz-box-shadow: 3px 3px 5px 1px rgba(95,95,95,1);
+    box-shadow: 3px 3px 5px 1px rgba(95,95,95,1);
 }
 
 .clickable {
@@ -124,11 +146,23 @@ ul.root_checkpoints, ul.childrenList {
     padding: 3px;
 }
 
-.goal, .checkpoint {
+.infoPage, .goal, .checkpoint {
     position: relative;
-    margin: 8px 0px 8px 20px;
+    margin: 13px 13px 13px 20px;
     border: 1px solid #DDDDDD;
     border-radius: 5px;
+}
+.sort-placeholder-highlight {
+    height: 60px;
+    background-color: #FFFFDD;
+    margin: 13px 13px 13px 20px;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+}
+.goal, .checkpoint {
+    -webkit-box-shadow: 3px 3px 5px 1px rgba(95,95,95,1);
+    -moz-box-shadow: 3px 3px 5px 1px rgba(95,95,95,1);
+    box-shadow: 3px 3px 5px 1px rgba(95,95,95,1);
 }
 .goal {
     background-color: #D4B8DF;
@@ -177,6 +211,11 @@ ul.root_checkpoints, ul.childrenList {
     color: #888888 !important;
     background-color: #DFDFDF !important;
     border-color: #333333 !important;
+}
+.cancelled {
+    color: #888888 !important;
+    background-color: #DFADAD !important;
+    border-color: #AB8888 !important;
 }
 
 .checkpoint_title, .goal_title {
@@ -244,8 +283,7 @@ ul .childrenList {
 .addCheckpointArea {
     color: black;
     text-decoration: none;
-    min-height: 1px;
-    min-width: 90%;
+    max-width: 90%;
     padding-bottom: 5px;
     backgr/ound-color: #A0A0CD;
 }
@@ -279,4 +317,78 @@ ul .childrenList {
     max-width: 150px;
     font-size: 80%;
     font-style: italic;
+}
+
+@media (max-width: 600px) {
+    #header {
+        position: relative;
+        clear: both;
+        width: 100%;
+        height: auto;
+        padding: 0px;
+    }
+    .headerButton {
+        position: relative !important;
+        float: none !important;
+        display: inline-block !important;
+        margin: 20px;
+        width: 80px;
+        font-weight: bold;
+    }
+    #loginForm {
+        position: relative;
+        display: inline-block;
+        float: left;
+        top: 0px;
+        margin: 0px;
+        padding: 10px;
+        font-size: 12px;
+        font-weight: bold;
+        border: 1px solid #DDDDDD;
+        border-radius: 3px;
+        background-color: #D9D9FF;
+    }
+    #newGoalForm, #createAccountForm {
+        position: relative;
+        display: inline-block;
+        float: right;
+        top: 0px;
+        margin: 0px;
+        padding: 10px;
+        font-size: 12px;
+        font-weight: bold;
+        border: 1px solid #DDDDDD;
+        border-radius: 3px;
+        background-color: #D9D9FF;
+    }
+    #newGoalForm {
+        width: 200px;
+    }
+    #page {
+        position: relative;
+        width: 100%;
+        top: 0px;
+        margin: 0px 0px 25px;
+        padding: 1px 0px 15px;
+        background: #FFFFFF;
+    }
+    .infoPage, .goal, .checkpoint {
+        margin: 10px 10px 10px 10px;
+    }
+    #footer {
+        position: relative;
+        height: auto;
+        padding: 0px;
+        /* max-height: 120px; */
+    }
+    #footer div {
+        margin-top: 8px !important;
+        margin-bottom: 8px !important;
+    }
+    #copyright {
+        position: relative !important;
+        float: none !important;
+        display: inline-block !important;
+        margin: 0px 0px 0px 20px !important;
+    }
 }
