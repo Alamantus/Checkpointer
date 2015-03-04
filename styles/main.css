@@ -204,8 +204,15 @@ ul.root_checkpoints, ul.childrenList {
     background-color: #EEEEEE;
 }
 
-.checkpoint_status, .goal_status {
+.checkpoint_status, .goal_status, .public_status {
     margin: 0px 10px 0px 0px;
+}
+.public_status {
+    display: inline-block;
+    cursor: default;
+}
+.noborder {
+    border: none !important;
 }
 .complete {
     color: #888888 !important;

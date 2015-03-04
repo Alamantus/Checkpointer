@@ -26,7 +26,7 @@ $( document ).ready(function() {
     $("#createAccountButton").click(function (event) {
         $(this).parent().css("background-color", "#D9D9FF");
         $("#createAccountForm").slideDown("fast");
-        $("#nameInput").focus();
+        $("#createAccountUsername").focus();
     });
     $("#cancelCreateAccountButton, #loginButton").click(function (event) {
         $("#createAccountButton").parent().css("background-color", "");
@@ -35,7 +35,13 @@ $( document ).ready(function() {
     $("#createAccountUsername").focusout(function () {
         if ($(this).is(":visible")) {
             var usernameValue = $(this).val();
-            if (usernameValue.length > 1) {
+            if (usernameValue.length <= 1) {
+                $("#createAccountUsernameMesssage").text("Must be more than 1 character long.");
+                $("#createAccountUsernameMesssage").attr("class", "invalid");
+            } else if (usernameValue.indexOf(" ") >= 0) {
+                $("#createAccountUsernameMesssage").text("You cannot include spaces in your username.");
+                $("#createAccountUsernameMesssage").attr("class", "invalid");
+            } else {
                 var usernamePostData = { username: usernameValue };
                 
                 $.post("ajax/check_username.php", usernamePostData)
@@ -48,21 +54,18 @@ $( document ).ready(function() {
                             $("#createAccountUsernameMesssage").attr("class", "hidden");
                         }
                     });
-            } else {
-                $("#createAccountUsernameMesssage").text("Must be more than 1 character long.");
-                $("#createAccountUsernameMesssage").attr("class", "invalid");
             }
         }
     });
     $("#createAccountPassword").focusout(function () {
         if ($(this).is(":visible")) {
             var pwValue = $(this).val();
-            if (pwValue.length >= 4) {
-                $("#createAccountPasswordMesssage").text("");
-                $("#createAccountPasswordMesssage").attr("class", "hidden");
-            } else {
+            if (pwValue.length < 4) {
                 $("#createAccountPasswordMesssage").text("Must be at least 4 characters long.");
                 $("#createAccountPasswordMesssage").attr("class", "invalid");
+            } else {
+                $("#createAccountPasswordMesssage").text("");
+                $("#createAccountPasswordMesssage").attr("class", "hidden");
             }
         }
     });
@@ -181,6 +184,7 @@ $( document ).ready(function() {
         var detailsSnipID = detailsID + "_snip";
         var detailsClass = "." + $(detailsID).attr('class');
         var checkpointID = titleID.replace("#", "").replace("goal", "").replace("checkpoint", "");
+        var privacy = $(this).attr('privacy');
         
         if ($(this).text() == "Edit") {
             $(this).text("Done");
@@ -188,7 +192,10 @@ $( document ).ready(function() {
             var titleText = $(titleID).children(".title").text();
             var titleEditBox = "<input type='text' id='" + titleID.replace("#", "") + "_editbox' class='titleEditBox' name='title' value='" + titleText + "' length='199'>";
             var detailsText = $(detailsID).children(detailsClass + "_text").text();
-            var detailsEditBox = "<textarea id='" + detailsID.replace("#", "") + "_editbox' class='detailsEditBox'>" + detailsText + "</textarea>";
+            var detailsEditBox = "<textarea id='" + detailsID.replace("#", "") + "_editbox' class='detailsEditBox'>" + detailsText + "</textarea><br /><br />";
+            if (typeof privacy !== "undefined") {
+                detailsEditBox += "Goal Privacy: <select id='" + titleID.replace("#", "") + "_privacy' class='privacySelect'><option value='0'" + ((privacy != 1) ? "selected='selected'" : "") + ">Private</option><option value='1'" + ((privacy == 1) ? "selected='selected'" : "") + ">Public</option></select> <span class='privacyExplanation clickable'>What's this?</span>";
+            }
             detailsEditBox += "<span id='" + titleID.replace("#", "") + "_delete' class='deleteButton clickable'>Delete?</span>";
             detailsEditBox += "<div id='" + titleID.replace("#", "") + "_confirm' class='deleteConfirm'>";
             if (detailsClass.indexOf("goal") >= 0) {
@@ -207,6 +214,11 @@ $( document ).ready(function() {
             $(detailsID).show("fast");
             $(detailsID).children(detailsClass + "_text").html(detailsEditBox);
             $("#" + titleID.replace("#", "") + "_confirm").hide();
+                        
+            $(".privacyExplanation").click(function (event) {
+                var text = "If this goal's privacy is set to Public, anyone who accesses www.checkpointer.tk/?user=<Your-Username-Here> will be able to see this goal and all its checkpoints.\nThis is useful if you want to share your goals with people.";
+                alert(text);
+            });
             
             // Delete Checkpoint Button
             $("#" + titleID.replace("#", "") + "_delete").click(function (event) {
@@ -242,8 +254,9 @@ $( document ).ready(function() {
             var checkpointID = titleID.replace("#", "").replace("goal", "").replace("checkpoint", "");
             var titleValue = $(titleID + "_editbox").val();
             var detailsValue = $(detailsID + "_editbox").val();
+            var privacyValue = $(titleID + "_privacy").val();
             
-            var postData = { id: checkpointID, title: titleValue, text: detailsValue };
+            var postData = { id: checkpointID, title: titleValue, text: detailsValue, privacy: privacyValue };
             
             $.post("ajax/update_checkpoint.php", postData)
                 .done(function (data) {

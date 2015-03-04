@@ -6,8 +6,9 @@ if (isset($_POST["id"])) {
     $id = $_POST["id"];
     $title = str_replace("\\", "&#34;", str_replace("\"", "&#34;", str_replace("'", "&#39;", htmlspecialchars($_POST["title"]))));
     $text = str_replace("\\", "&#92;", str_replace("\"", "&#34;", str_replace("'", "&#39;", htmlspecialchars($_POST["text"]))));
+    $is_public = isset($_POST["privacy"]) ? $_POST["privacy"] : "0";
     
-    $update_sql = "UPDATE checkpoint SET title='" . easy_crypt('encrypt', $title) . "', text='" . easy_crypt('encrypt', $text) . "', last_modified= " . time() . " WHERE id=" . $id . ";";
+    $update_sql = "UPDATE checkpoint SET title='" . easy_crypt('encrypt', $title) . "', text='" . easy_crypt('encrypt', $text) . "', is_public=" . $is_public . ", last_modified=" . time() . " WHERE id=" . $id . ";";
     
     if (query($update_sql)) {
         echo "success";

@@ -1,3 +1,4 @@
+<div class="infoPage">
 <?php
 if (isset($_POST['name'])) {
     $valid = Validate_User($_POST['name'], $_POST['pw']);
@@ -13,3 +14,4 @@ else {
     Show_Login_Form("");
 }
 ?>
+</div>

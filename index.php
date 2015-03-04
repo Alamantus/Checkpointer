@@ -33,7 +33,17 @@ elseif ($action == "logout") {
 elseif ($action == "createaccount") {
     include_once('templates/create_account.php');
 }
-elseif (!$action) {
+elseif ($view_user != false) {
+    $user_id = Get_User_Id($view_user);
+    if ($user_id == "No User") {
+        echo "<div class='infoPage'><strong>There is nobody with the username \"". $view_user ."\" on Checkpointer.</strong></div>";
+    } else {
+        echo "<div class='infoPage' style='width: 90%; max-width: 90%'><h2>". Get_Username($user_id) ."'s Goals</h2>";    //Re-calculate to get username as it was entered in database.
+        Output_User_Checkpoints($user_id, true);
+        echo "</div>";
+    }
+}
+elseif (!$action && $view_user == false) {
     if (!isset($_SESSION['user'])) {
 ?>
         <div  class="infoPage">
