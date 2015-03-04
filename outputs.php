@@ -165,7 +165,7 @@ function Get_Children($user_id, $parent_id, $public = false) {
                 if ($statuses != false && num_rows($statuses) > 0) {
                     while($status = fetch_assoc($statuses)) {
                         if ($child["status"] == $status["id"])
-                            $child_output .= "<div class='public_status' title='". $status["name"] ."'>". $status["html_display"] ."</div>";
+                            $child_output .= "<div class='public_status' title='". $status["name"] ."' value='". $status["id"] ."'>". $status["html_display"] ."</div>";
                     }
                 }
             }

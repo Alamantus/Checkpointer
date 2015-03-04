@@ -377,6 +377,32 @@ function StyleCheckpointStatusOnLoad (collapseChildren) {
             }
         }
     });
+    
+    //Style public checkpoints
+    $(".public_status").each(function () {
+        if ($(this).attr("value") == 2) {
+            $(this).parent().parent().addClass("complete");
+            $(this).parent().parent().find("div").each(function () {
+                $(this).addClass("complete");
+            });
+        } else if ($(this).attr("value") == 3) {
+            $(this).parent().parent().addClass("cancelled");
+            $(this).parent().parent().find("div").each(function () {
+                $(this).addClass("cancelled");
+            });
+        }
+        if ($(this).attr("value") == 2 || $(this).attr("value") == 3) {
+            if (collapseChildren) {
+                // Collapse all children
+                $(this).parent().parent().find(".childCount").each(function (event) {
+                    var thisID = $(this).attr('id');
+                    var childrenID = "#" + thisID.replace("_count", "");
+                    $(this).show("fast");
+                    $(childrenID).hide("fast");
+                });
+            }
+        }
+    });
 }
 function ReStyleCheckpointsStatus () {
     $(".checkpoint_status").each(function () {
