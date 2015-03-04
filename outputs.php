@@ -182,8 +182,9 @@ function Get_Children($user_id, $parent_id, $public = false) {
             $child_output .= "</div>";
             if ($text != "") {
             $child_output .= "<div id='checkpoint". $child["id"] ."_details_snip' title='Expand Details' class='checkpoint_details_snip clickable'>";
-                $child_output .= substr($text, 0, 30);
-                if (strlen($text) > 30) {
+                $text_linebreak_removed = preg_replace("/<br[ ]?\/?>/", " ", $text);
+                $child_output .= substr($text_linebreak_removed, 0, 30);
+                if (strlen($text_linebreak_removed) > 30) {
                     $child_output .= "...";
                 }
             $child_output .= "</div>";

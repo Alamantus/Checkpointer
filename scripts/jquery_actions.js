@@ -191,7 +191,7 @@ $( document ).ready(function() {
             
             var titleText = $(titleID).children(".title").text();
             var titleEditBox = "<input type='text' id='" + titleID.replace("#", "") + "_editbox' class='titleEditBox' name='title' value='" + titleText + "' length='199'>";
-            var detailsText = $(detailsID).children(detailsClass + "_text").text();
+            var detailsText = $(detailsID).children(detailsClass + "_text").html().replace(/<br[ ]?\/?>/g, "\n");
             var detailsEditBox = "<textarea id='" + detailsID.replace("#", "") + "_editbox' class='detailsEditBox'>" + detailsText + "</textarea><br /><br />";
             if (typeof privacy !== "undefined") {
                 detailsEditBox += "Goal Privacy: <select id='" + titleID.replace("#", "") + "_privacy' class='privacySelect'><option value='0'" + ((privacy != 1) ? "selected='selected'" : "") + ">Private</option><option value='1'" + ((privacy == 1) ? "selected='selected'" : "") + ">Public</option></select> <span class='privacyExplanation clickable'>What's this?</span>";

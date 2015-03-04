@@ -3,6 +3,7 @@
 if (isset($_POST["title"])) {
     $title = str_replace("\\", "&#34;", str_replace("\"", "&#34;", str_replace("'", "&#39;", htmlspecialchars($_POST["title"]))));
     $text = str_replace("\\", "&#92;", str_replace("\"", "&#34;", str_replace("'", "&#39;", htmlspecialchars($_POST["text"]))));
+    $text = str_replace("\n", "<br />", $text);
     $parent = isset($_POST["parent"]) ? $_POST["parent"] : 0;
     $sort = isset($_POST["sort"]) ? $_POST["sort"] : -1;
     $status = isset($_POST["status"]) ? $_POST["status"] : 1;
