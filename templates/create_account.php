@@ -1,3 +1,4 @@
+<div class="infoPage">
 <?php
 if (isset($_POST["name"])) {
     $name = str_replace("\\", "&#34;", str_replace("\"", "&#34;", str_replace("'", "&#39;", htmlspecialchars($_POST["name"]))));
@@ -17,3 +18,4 @@ if (isset($_POST["name"])) {
     echo "<strong>No Username specified!</strong>";
 }
 ?>
+</div>

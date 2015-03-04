@@ -1,3 +1,4 @@
+<div class="infoPage">
 <?php
 if (isset($_POST["title"])) {
     $title = str_replace("\\", "&#34;", str_replace("\"", "&#34;", str_replace("'", "&#39;", htmlspecialchars($_POST["title"]))));
@@ -23,3 +24,4 @@ if (isset($_POST["title"])) {
     echo "No Title!";
 }
 ?>
+</div>
