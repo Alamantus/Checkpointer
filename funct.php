@@ -1,14 +1,37 @@
 <?php
 
 // Simplified PHP functions
-function query ($query) {
-    return mysqli_query(connection(), $query);
+function query ($query_string) {
+    $db_connection = new PDO('sqlite:checkpointer.db');
+    $db_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $db_connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
+    $db_connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    try {
+        $query_results = $db_connection->prepare($query_string);
+        $query_results->execute();
+        return $query_results;
+    }
+    catch (PDOException $ex) {
+        return false;
+    }
 }
 function num_rows ($query_results) {
-    return mysqli_num_rows($query_results);
+    try {
+        $row_count = $query_results->rowCount();
+        return $row_count;
+    }
+    catch (PDOException $ex) {
+        return false;
+    }
 }
 function fetch_assoc ($query_results) {
-    return mysqli_fetch_assoc($query_results);
+    try {
+        $fetch_assoc = $query_results->fetch();
+        return $fetch_assoc;
+    }
+    catch (PDOException $ex) {
+        return false;
+    }
 }
 
 /**
