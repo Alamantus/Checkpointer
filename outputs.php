@@ -225,7 +225,7 @@ function Get_Children($user_id, $parent_id, $public_only = false) {
             $child_output .= "Hide Sub-Checkpoints";
             $child_output .= "</span>";
             $child_output .= "<ul id='goal". $child["id"] ."_children_list' class='childrenList' parentid='". $child["id"] ."'>";
-            $child_output .= Get_Children($user_id, $child["id"]);
+            $child_output .= Get_Children($user_id, $child["id"], $public_only);
             $child_output .= "</ul>";
             $child_output .= "</div>";
             $child_output .= "</li>";
