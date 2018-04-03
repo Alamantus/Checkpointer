@@ -149,7 +149,7 @@ $( document ).ready(function() {
                 $(this).removeClass("complete");
             });
             // Re-check statuses for incorrectly un-styled checkpoints and re-add the class.
-            ReStyleCheckpointStatus(false);
+            ReStyleCheckpointsStatus(false);
         }
     });
     
@@ -408,13 +408,18 @@ function ReStyleCheckpointsStatus () {
     $(".checkpoint_status").each(function () {
         if ($(this).val() == 2) {
             $(this).parent().parent().addClass("complete");
-            $(this).parent().parent().children().each(function () {
+            $(this).parent().parent().find("div").each(function () {
                 $(this).addClass("complete");
             });
         } else if ($(this).val() == 3) {
             $(this).parent().parent().addClass("cancelled");
-            $(this).parent().parent().children().each(function () {
+            $(this).parent().parent().find("div").each(function () {
                 $(this).addClass("cancelled");
+            });
+        } else {
+            $(this).parent().parent().removeClass("complete cancelled");
+            $(this).parent().parent().find("div").each(function () {
+                $(this).removeClass("complete cancelled");
             });
         }
     });
@@ -430,6 +435,11 @@ function StyleChildCheckpointStatus (element, collapseChildren) {
         element.parent().parent().addClass("cancelled");
         element.parent().parent().find("div").each(function () {
             $(this).addClass("cancelled");
+        });
+    } else {
+        $(this).parent().parent().removeClass("complete cancelled");
+        $(this).parent().parent().find("div").each(function () {
+            $(this).removeClass("complete cancelled");
         });
     }
     if (collapseChildren) {
