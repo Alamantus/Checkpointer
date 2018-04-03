@@ -7,7 +7,15 @@ if (isset($_POST["id"])) {
     $sort = isset($_POST["sort"]) ? $_POST["sort"] : 0;
     
     $update_sql = "UPDATE checkpoint SET title=?, text=?, sort=? WHERE id=?;";
-    $result = query($update_sql, array($title, $text, $sort, $id), false);
+    $params = array($title, $text);
+    if (ENCRYPT_DATA) {
+        $params = array_map(function($data) {
+            return easy_crypt('encrypt', $data);
+        }, $params);
+    }
+    $params[] = $sort;
+    $params[] = $id;
+    $result = query($update_sql, $params, false);
     if ($result && $result->rowCount() > 0) {
         echo "Record edited successfully";
         header('Location: .');

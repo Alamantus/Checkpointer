@@ -18,25 +18,6 @@ function query ($query_string, $params = array(), $return_results = true) {
     }
 }
 
-// function num_rows ($query_results) {
-//     try {
-//         $row_count = $query_results->rowCount();
-//         return $row_count;
-//     }
-//     catch (PDOException $ex) {
-//         return false;
-//     }
-// }
-// function fetch_assoc ($query_results) {
-//     try {
-//         $fetch_assoc = $query_results->fetch();
-//         return $fetch_assoc;
-//     }
-//     catch (PDOException $ex) {
-//         return false;
-//     }
-// }
-
 /**
  * simple method to encrypt or decrypt a plain text string
  * initialization vector(IV) has to be the same when encrypting and decrypting
@@ -54,11 +35,9 @@ function query ($query_string, $params = array(), $return_results = true) {
  * @return string
  */
 function easy_crypt($action, $string) {
-    $output = false;
-
     $encrypt_method = "AES-256-CBC";
-    $secret_key = SITE_NAME;
-    $secret_iv = SITE_CATCHPHRASE;
+    $secret_key = ENCRYPT_KEY;
+    $secret_iv = ENCRYPT_IV;
 
     // hash
     $key = hash('sha256', $secret_key);
@@ -68,26 +47,25 @@ function easy_crypt($action, $string) {
 
     if( $action == 'encrypt' ) {
         $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
-        $output = base64_encode($output);
+        return base64_encode($output);
     }
     else if( $action == 'decrypt' ){
-        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+        return openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
     }
 
-    return $output;
+    return false;
 }
 
 // PHP Helpers
 function Validate_User($name, $password) {
-    $hashed_pw = crypt($password, $name);
-    $query = "SELECT * FROM user WHERE name=? AND password=?";
-    $users = query($query, array($name, $hashed_pw));
+    $query = "SELECT * FROM user WHERE name=?";
+    $users = query($query, array($name));
     // echo '<pre>' . var_export($users, true) . '</pre>';
     if ($users && count($users) === 1) {
-        return true;
-    } else {
-        return false;
+        echo '<pre>' . var_export($users, true) . '</pre>';
+        return password_verify($password, $users[0]['password']);
     }
+    return false;
 }
 function Get_Username($id) {
     $query = "SELECT name FROM user WHERE id=" . $id;

@@ -62,8 +62,14 @@ function Output_User_Checkpoints ($id, $public_only = false) {
         echo "<ul class='root_checkpoints' parentid='0'>";
         // output data of each checkpoint as a list item
         foreach($checkpoints as $checkpoint) {
-            $title = htmlspecialchars_decode($checkpoint['title']);
-            $text = htmlspecialchars_decode($checkpoint['text']);
+            $title = $checkpoint['title'];
+            $text = $checkpoint['text'];
+            if (ENCRYPT_DATA) {
+                $title = easy_crypt('decrypt', $title);
+                $text = easy_crypt('decrypt', $text);
+            }
+            $title = htmlspecialchars_decode($title);
+            $text = htmlspecialchars_decode($text);
             
             $status_query = "SELECT * FROM status WHERE id > 0 ORDER BY id ASC";
             $statuses = query($status_query);
@@ -141,8 +147,14 @@ function Get_Children($user_id, $parent_id, $public_only = false) {
     if ($children && count($children) > 0) {
         // output data of each checkpoint as a list item
         foreach($children as $child) {
-            $title = htmlspecialchars_decode($child['title']);
-            $text = htmlspecialchars_decode($child['text']);
+            $title = $child['title'];
+            $text = $child['text'];
+            if (ENCRYPT_DATA) {
+                $title = easy_crypt('decrypt', $title);
+                $text = easy_crypt('decrypt', $text);
+            }
+            $title = htmlspecialchars_decode($title);
+            $text = htmlspecialchars_decode($text);
             
             $status_query = "SELECT * FROM status WHERE id > 0 ORDER BY id ASC";
             $statuses = query($status_query);
