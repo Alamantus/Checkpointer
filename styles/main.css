@@ -24,7 +24,7 @@ ul.root_checkpoints, ul.childrenList {
     height: 60px;
     margin: 0px;
     padding: 10px;
-    background: #B9B9DD;
+    background: #89C989;
     -webkit-box-shadow: 0px 1px 5px 1px rgba(95,95,95,1);
     -moz-box-shadow: 0px 1px 5px 1px rgba(95,95,95,1);
     box-shadow: 0px 1px 5px 1px rgba(95,95,95,1);
@@ -163,45 +163,46 @@ ul.root_checkpoints, ul.childrenList {
     -webkit-box-shadow: 3px 3px 5px 1px rgba(95,95,95,1);
     -moz-box-shadow: 3px 3px 5px 1px rgba(95,95,95,1);
     box-shadow: 3px 3px 5px 1px rgba(95,95,95,1);
+    border: 2px solid black;
 }
 .goal {
-    background-color: #D4B8DF;
+    background-color: #AACCAA;
 }
 .goal .checkpoint {
-    background-color: #D9D9FF;
+    background-color: #D9D990;
 }
 .goal .checkpoint .checkpoint {
-    background-color: #EEEEEE;
+    background-color: #DF9D50;
 }
 .goal .checkpoint .checkpoint .checkpoint {
-    background-color: #D9D9FF;
+    background-color: #D9CC64;
 }
 .goal .checkpoint .checkpoint .checkpoint .checkpoint {
-    background-color: #EEEEEE;
+    background-color: #E89085;
 }
 .goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
-    background-color: #D9D9FF;
+    background-color: #D9D990;
 }
 .goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
-    background-color: #EEEEEE;
+    background-color: #DF9D50;
 }
 .goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
-    background-color: #D9D9FF;
+    background-color: #D9CC64;
 }
 .goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
-    background-color: #EEEEEE;
+    background-color: #E89085;
 }
 .goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
-    background-color: #D9D9FF;
+    background-color: #D9D990;
 }
 .goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
-    background-color: #EEEEEE;
+    background-color: #DF9D50;
 }
 .goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint {
-    background-color: #D9D9FF;
+    background-color: #D9CC64;
 }
 .goal .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint .checkpoint  .checkpoint {
-    background-color: #EEEEEE;
+    background-color: #E89085;
 }
 
 .checkpoint_status, .goal_status, .public_status {
@@ -292,7 +293,6 @@ ul .childrenList {
     text-decoration: none;
     max-width: 90%;
     padding-bottom: 5px;
-    backgr/ound-color: #A0A0CD;
 }
 .addCheckpointButton {
     font-weight: bolder;
@@ -344,7 +344,7 @@ ul .childrenList {
     }
     #loginForm {
         position: relative;
-        display: inline-block;
+        display: block;
         float: left;
         top: 0px;
         margin: 0px;
@@ -357,7 +357,7 @@ ul .childrenList {
     }
     #newGoalForm, #createAccountForm {
         position: relative;
-        display: inline-block;
+        display: block;
         float: right;
         top: 0px;
         margin: 0px;
