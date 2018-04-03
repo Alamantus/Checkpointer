@@ -1,38 +1,41 @@
 <?php
 
 // Simplified PHP functions
-function query ($query_string) {
-    $db_connection = new PDO('sqlite:checkpointer.db');
-    $db_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $db_connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
-    $db_connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+function query ($query_string, $params = array(), $return_results = true) {
+    $db_connection = connection();
     try {
         $query_results = $db_connection->prepare($query_string);
-        $query_results->execute();
-        return $query_results;
+        $query_results->execute($params);
+        if ($return_results) {
+            return $query_results->fetchAll();
+        } else {
+            return $query_results;
+        }
     }
     catch (PDOException $ex) {
+        echo '<pre>' . var_export($ex, true) . '<pre>';
         return false;
     }
 }
-function num_rows ($query_results) {
-    try {
-        $row_count = $query_results->rowCount();
-        return $row_count;
-    }
-    catch (PDOException $ex) {
-        return false;
-    }
-}
-function fetch_assoc ($query_results) {
-    try {
-        $fetch_assoc = $query_results->fetch();
-        return $fetch_assoc;
-    }
-    catch (PDOException $ex) {
-        return false;
-    }
-}
+
+// function num_rows ($query_results) {
+//     try {
+//         $row_count = $query_results->rowCount();
+//         return $row_count;
+//     }
+//     catch (PDOException $ex) {
+//         return false;
+//     }
+// }
+// function fetch_assoc ($query_results) {
+//     try {
+//         $fetch_assoc = $query_results->fetch();
+//         return $fetch_assoc;
+//     }
+//     catch (PDOException $ex) {
+//         return false;
+//     }
+// }
 
 /**
  * simple method to encrypt or decrypt a plain text string
@@ -77,10 +80,10 @@ function easy_crypt($action, $string) {
 // PHP Helpers
 function Validate_User($name, $password) {
     $hashed_pw = crypt($password, $name);
-    $query = "SELECT * FROM user WHERE name='" . $name . "' AND password='" . $hashed_pw . "'";
-    $users = query($query);
-    
-    if (num_rows($users) === 1) {
+    $query = "SELECT * FROM user WHERE name=? AND password=?";
+    $users = query($query, array($name, $hashed_pw));
+    // echo '<pre>' . var_export($users, true) . '</pre>';
+    if ($users && count($users) === 1) {
         return true;
     } else {
         return false;
@@ -90,11 +93,9 @@ function Get_Username($id) {
     $query = "SELECT name FROM user WHERE id=" . $id;
     $users = query($query);
     
-    if (num_rows($users) > 0) {
-        if (num_rows($users) === 1) {
-            while($user = fetch_assoc($users)) {
-                return $user["name"];
-            }
+    if ($users && count($users) > 0) {
+        if (count($users) === 1) {
+            return $users[0]['name'];
         } else {
             return "More than one username returned!";
         }
@@ -103,20 +104,17 @@ function Get_Username($id) {
     }
 }
 function Get_User_Id($username) {
-    $query = "SELECT id FROM user WHERE name='" . $username . "'";
-    $users = query($query);
-    
-    if (num_rows($users) > 0) {
-        if (num_rows($users) === 1) {
-            while($user = fetch_assoc($users)) {
-                return $user["id"];
-            }
+    $query = "SELECT id FROM user WHERE name=?";
+    $users = query($query, array($username));
+
+    if ($users && count($users) > 0) {
+        if (count($users) === 1) {
+            return $users[0]['id'];
         } else {
             return "More than one username returned!";
         }
-    } else {
-        return "No User";
     }
+    return "No User";
 }
 
 ?>

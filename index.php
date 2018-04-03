@@ -2,6 +2,7 @@
 require_once('config.php');
 require_once('funct.php');
 require_once('outputs.php');
+date_default_timezone_set(TIMEZONE);
 session_start();
 $current_user = isset($_SESSION['user']) ? $_SESSION['user'] : 0;
 
@@ -44,7 +45,7 @@ elseif ($view_user != false) {
     }
 }
 elseif (!$action && $view_user == false) {
-    if (!isset($_SESSION['user'])) {
+    if (!isset($_SESSION['user']) || $_SESSION['user'] == 0) {
 ?>
         <div  class="infoPage">
         <h2>Reach your goals one checkpoint at a time!</h2>
@@ -58,11 +59,12 @@ elseif (!$action && $view_user == false) {
     }
     else {
         // Update Last Active
-        $update_sql = "UPDATE user SET last_active= " . time() . " WHERE id=" . $current_user . ";";
-        if (query($update_sql)) {
+        $update_sql = "UPDATE user SET last_active= " . time() . " WHERE id=?;";
+        $result = query($update_sql, array($current_user), false);
+        if ($result && $result->rowCount() > 0) {
             //success!
         } else {
-            echo "Error: " . $update_sql . "<br>" . mysqli_error(connection());
+            echo "Error: " . $update_sql . "<br><pre>" . var_export($result->errorInfo(), true) . "</pre>";
         }
         
         // And show checkpoints

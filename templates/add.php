@@ -11,15 +11,18 @@ if (isset($_POST["title"])) {
     $parent_type = isset($_POST["parentType"]) ? $_POST["parentType"] : "";
     
     $insert_sql = "INSERT INTO checkpoint (title, text, parent, sort, status, owner, created_date) ";
-    $insert_sql .= "VALUES ('" . easy_crypt('encrypt', $title) . "', '" . easy_crypt('encrypt', $text) . "', " . $parent . ", " . $sort . ", " . $status . ", " . $owner . ", " . time() . ");";
-    if (query($insert_sql)) {
-        echo "New record created successfully";
+    $insert_sql .= "VALUES (?, ?, " . $parent . ", " . $sort . ", " . $status . ", " . $owner . ", " . time() . ");";
+    $cleaned_title = htmlspecialchars($title);
+    $cleaned_text = htmlspecialchars($text);
+    $result = query($insert_sql, array($cleaned_title, $cleaned_text), false);
+    if ($result && $result->rowCount() > 0) {
+        // echo "New record created successfully";
         if ($parent_type != "") {
             setcookie("anchor", "#" . $parent_type . $parent);
         }
         header('Location: .');
     } else {
-        echo "Error: " . $insert_sql . "<br>" . mysqli_error(connection());
+        echo "Error: " . $insert_sql . "<br><pre>" . var_export($result->errorInfo(), true) . "</pre>";
     }
 } else {
     echo "No Title!";

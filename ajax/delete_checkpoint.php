@@ -18,21 +18,22 @@ if (isset($_POST["id"])) {
 }
 
 function Delete_Children_And_Self ($id) {
-    $children_query = "SELECT * FROM checkpoint WHERE parent=" . $id . " ORDER BY sort ASC";
-    $children = query($children_query);
+    $children_query = "SELECT * FROM checkpoint WHERE parent=? ORDER BY sort ASC";
+    $children = query($children_query, array($id));
     
-    if ($children != false && num_rows($children) > 0) {
-        while($child = fetch_assoc($children)) {
+    if ($children != false && count($children) > 0) {
+        foreach($children as $child) {
             Delete_Children_And_Self($child["id"]);
         }
     }
     
-    $delete_sql = "DELETE FROM checkpoint WHERE id=" . $id . ";";
-    
-    if (query($delete_sql)) {
+    $delete_sql = "DELETE FROM checkpoint WHERE id=?;";
+    $result = query($delete_sql, array($id), false);
+    if ($result && $result->rowCount() > 0) {
         return true;
     } else {
-        echo "Error: " . $delete_sql . "<br>" . mysqli_error(connection());
+        echo "Error: " . $delete_sql . "<br><pre>" . var_export($result->errorInfo(), true) . "</pre>";
+        return false;
     }
 }
 ?>

@@ -48,33 +48,33 @@ function Return_Edit_Checkpoint_Form ($id, $title, $text, $sort) {
     return $checkpoint_form;
 }
 
-function Output_User_Checkpoints ($id, $public = false) {
+function Output_User_Checkpoints ($id, $public_only = false) {
     //Select 
-    $checkpoints_query = "SELECT c.*, s.name AS 'status_name' FROM checkpoint c LEFT JOIN status s ON c.status=s.id WHERE parent=0 AND owner=" . $id;
-    if ($public) {
+    $checkpoints_query = "SELECT c.*, s.name AS 'status_name' FROM checkpoint c LEFT JOIN status s ON c.status=s.id WHERE parent=0 AND owner=?";
+    if ($public_only) {
         $checkpoints_query .= " AND is_public = 1";
     }
     $checkpoints_query .= " ORDER BY sort ASC";
-    $checkpoints = query($checkpoints_query);
+    $checkpoints = query($checkpoints_query, array($id));
     $checkpoints_output = "";
 
-    if ($checkpoints != false && num_rows($checkpoints) > 0) {
+    if ($checkpoints && count($checkpoints) > 0) {
         echo "<ul class='root_checkpoints' parentid='0'>";
         // output data of each checkpoint as a list item
-        while($checkpoint = fetch_assoc($checkpoints)) {
-            $title = easy_crypt('decrypt', $checkpoint['title']);
-            $text = easy_crypt('decrypt', $checkpoint['text']);
+        foreach($checkpoints as $checkpoint) {
+            $title = htmlspecialchars_decode($checkpoint['title']);
+            $text = htmlspecialchars_decode($checkpoint['text']);
             
             $status_query = "SELECT * FROM status WHERE id > 0 ORDER BY id ASC";
             $statuses = query($status_query);
             
             $checkpoints_output .= "<li class='goal' cpid='". $checkpoint["id"] ."'>";
             $checkpoints_output .= "<div id='goal". $checkpoint["id"] ."' class='goal_title'>";
-            if (!$public) {
+            if (!$public_only) {
             $checkpoints_output .= "<span class='handle'>&#8645;</span>";
                 $checkpoints_output .= "<select id='goal". $checkpoint["id"] ."_status' class='checkpoint_status'>";
-                if ($statuses != false && num_rows($statuses) > 0) {
-                    while($status = fetch_assoc($statuses)) {
+                if ($statuses && count($statuses) > 0) {
+                    foreach($statuses as $status) {
                         $checkpoints_output .= "<option value='". $status["id"] ."' title='". $status["name"] ."'";
                         if ($checkpoint["status"] == $status["id"]) {
                             $checkpoints_output .= " selected='selected'";
@@ -83,8 +83,8 @@ function Output_User_Checkpoints ($id, $public = false) {
                     }
                 }
             } else {
-                if ($statuses != false && num_rows($statuses) > 0) {
-                    while($status = fetch_assoc($statuses)) {
+                if ($statuses && count($statuses) > 0) {
+                    foreach($statuses as $status) {
                         if ($checkpoint["status"] == $status["id"])
                             $checkpoints_output .= "<div class='public_status' title='". $status["name"] ."'>". $status["html_display"] ."</div>";
                     }
@@ -94,7 +94,7 @@ function Output_User_Checkpoints ($id, $public = false) {
             $checkpoints_output .= "<strong class='title' title='Created ". date("l, F j, Y \a\\t g:i a",$checkpoint["created_date"]) ."'>";
             $checkpoints_output .= $title;
             $checkpoints_output .= "</strong>";
-            if (!$public) {
+            if (!$public_only) {
                 $checkpoints_output .= "<strong id='goal". $checkpoint["id"] ."_edit' class='editButton clickable' user='". $id ."' privacy='". $checkpoint["is_public"] ."'>Edit</strong>";
                 $checkpoints_output .= "<strong class='addCheckpointButton clickable' title='Add Checkpoint to \"" . $title. "\"' id='addCheckpoint". $checkpoint["id"] ."'>";
                 $checkpoints_output .= "+";
@@ -106,7 +106,7 @@ function Output_User_Checkpoints ($id, $public = false) {
             $checkpoints_output .= $text;
             $checkpoints_output .= "</div>";
             $checkpoints_output .= "</div>";
-            if (!$public) {
+            if (!$public_only) {
                 $checkpoints_output .= "<div class='addCheckpointArea'>";
                 $checkpoints_output .= "<div id='addCheckpoint". $checkpoint["id"] ."_form' class='addCheckpointForm'>";
                 $checkpoints_output .= "<h3>Add Checkpoint to \"" . $title. "\"</h3>";
@@ -114,11 +114,11 @@ function Output_User_Checkpoints ($id, $public = false) {
                 $checkpoints_output .= "</div>";
                 $checkpoints_output .= "</div>";
             }
-            $checkpoints_output .= Count_Children($checkpoint["id"], "goal", " Checkpoints", $public);   //Inserts its own div section.
+            $checkpoints_output .= Count_Children($checkpoint["id"], "goal", " Checkpoints", $public_only);   //Inserts its own div section.
             $checkpoints_output .= "<div id='goal". $checkpoint["id"] ."_children' class='children'>";
             $checkpoints_output .= "<span id='goal". $checkpoint["id"] ."_children_hide' class='hideChildrenButton clickable'>Hide Checkpoints</span>";
             $checkpoints_output .= "<ul id='goal". $checkpoint["id"] ."_children_list' class='childrenList' parentid='". $checkpoint["id"] ."'>";
-            $checkpoints_output .= Get_Children($id, $checkpoint["id"], $public);
+            $checkpoints_output .= Get_Children($id, $checkpoint["id"], $public_only);
             $checkpoints_output .= "</ul>";
             $checkpoints_output .= "</div>";
             $checkpoints_output .= "</li>";
@@ -126,34 +126,34 @@ function Output_User_Checkpoints ($id, $public = false) {
         echo $checkpoints_output . "</ul>";
     } else {
         echo "<div class='infoPage'><strong>No goals yet!</strong>";
-        if (!$public) {
+        if (!$public_only) {
             echo "<p>Add a new goal by clicking \"New Goal\" in the header and get started!";
         }
         echo "</div>";
     }
     return;
 }
-function Get_Children($user_id, $parent_id, $public = false) {
-    $children_query = "SELECT c.*, s.name AS 'status_name' FROM checkpoint c LEFT JOIN status s ON c.status=s.id WHERE parent=" . $parent_id . " ORDER BY sort ASC";
-    $children = query($children_query);//Get Statuses
+function Get_Children($user_id, $parent_id, $public_only = false) {
+    $children_query = "SELECT c.*, s.name AS 'status_name' FROM checkpoint c LEFT JOIN status s ON c.status=s.id WHERE parent=? ORDER BY sort ASC";
+    $children = query($children_query, array($parent_id));//Get Statuses
     $child_output = "";
     
-    if ($children != false && num_rows($children) > 0) {
+    if ($children && count($children) > 0) {
         // output data of each checkpoint as a list item
-        while($child = fetch_assoc($children)) {
-            $title = easy_crypt('decrypt', $child['title']);
-            $text = easy_crypt('decrypt', $child['text']);
+        foreach($children as $child) {
+            $title = htmlspecialchars_decode($child['title']);
+            $text = htmlspecialchars_decode($child['text']);
             
             $status_query = "SELECT * FROM status WHERE id > 0 ORDER BY id ASC";
             $statuses = query($status_query);
             
             $child_output .= "<li class='checkpoint' cpid='". $child["id"] ."'>";
             $child_output .= "<div id='checkpoint". $child["id"] ."' class='checkpoint_title'>";
-            if (!$public) {
+            if (!$public_only) {
             $child_output .= "<span class='handle'>&#8645;</span>";
                 $child_output .= "<select id='goal". $child["id"] ."_status' class='checkpoint_status'>";
-                if ($statuses != false && num_rows($statuses) > 0) {
-                    while($status = fetch_assoc($statuses)) {
+                if ($statuses && count($statuses) > 0) {
+                    foreach($statuses as $status) {
                         $child_output .= "<option value='". $status["id"] ."' title='". $status["name"] ."'";
                         if ($child["status"] == $status["id"]) {
                             $child_output .= " selected='selected'";
@@ -162,8 +162,8 @@ function Get_Children($user_id, $parent_id, $public = false) {
                     }
                 }
             } else {
-                if ($statuses != false && num_rows($statuses) > 0) {
-                    while($status = fetch_assoc($statuses)) {
+                if ($statuses != false && count($statuses) > 0) {
+                    foreach($statuses as $status) {
                         if ($child["status"] == $status["id"])
                             $child_output .= "<div class='public_status' title='". $status["name"] ."' value='". $status["id"] ."'>". $status["html_display"] ."</div>";
                     }
@@ -173,7 +173,7 @@ function Get_Children($user_id, $parent_id, $public = false) {
             $child_output .= "<strong class='title' title='Created ". date("l, F j, Y \a\\t g:i a",$child["created_date"]) ."'>";
             $child_output .= $title;
             $child_output .= "</strong>";
-            if (!$public) {
+            if (!$public_only) {
                 $child_output .= "<strong id='checkpoint". $child["id"] ."_edit' class='editButton clickable' user='". $user_id ."'>Edit</strong>";
                 $child_output .= "<strong class='addCheckpointButton clickable' title='Add Checkpoint to \"" . $title. "\"' id='addCheckpoint". $child["id"] ."'>";
                 $child_output .= "+";
@@ -199,7 +199,7 @@ function Get_Children($user_id, $parent_id, $public = false) {
             $child_output .= $text;
             $child_output .= "</div>";
             $child_output .= "</div>";
-            if (!$public) {
+            if (!$public_only) {
             $child_output .= "<div class='addCheckpointArea'>";
                 $child_output .= "<div id='addCheckpoint". $child["id"] ."_form' class='addCheckpointForm'>";
                 $child_output .= "<h3>Add Checkpoint to \"" . $title. "\"</h3>";
@@ -207,7 +207,7 @@ function Get_Children($user_id, $parent_id, $public = false) {
                 $child_output .= "</div>";
                 $child_output .= "</div>";
             }
-            $child_output .= Count_Children($child["id"], "checkpoint", " Sub-Checkpoints", $public);  //Inserts its own div section.
+            $child_output .= Count_Children($child["id"], "checkpoint", " Sub-Checkpoints", $public_only);  //Inserts its own div section.
             $child_output .= "<div id='checkpoint". $child["id"] ."_children' class='children'>";
             $child_output .= "<span id='checkpoint". $child["id"] ."_children_hide' class='hideChildrenButton clickable'>";
             $child_output .= "Hide Sub-Checkpoints";
@@ -224,23 +224,23 @@ function Get_Children($user_id, $parent_id, $public = false) {
         return;
     }
 }
-function Count_Children($id, $id_prefix, $suffix, $public = false) {
-    $children_query = "SELECT * FROM checkpoint WHERE parent=" . $id . " ORDER BY sort ASC";
-    $children = query($children_query);
+function Count_Children($id, $id_prefix, $suffix, $public_only = false) {
+    $children_query = "SELECT * FROM checkpoint WHERE parent=? ORDER BY sort ASC";
+    $children = query($children_query, array($id));
     $output = "";
     
-    if (!$public) {
+    if (!$public_only) {
         $output .= "<div id='". $id_prefix . $id ."_children_count' class='childCount clickable'>";
-        if ($children != false && num_rows($children) > 0) {
-            $output .= "Show ". num_rows($children) . $suffix;
+        if ($children != false && count($children) > 0) {
+            $output .= "Show ". count($children) . $suffix;
         } else {
             $output .= "Open ". $suffix . " area for sorting";
         }
         $output .= "</div>";
     } else {
-        if ($children != false && num_rows($children) > 0) {
+        if ($children != false && count($children) > 0) {
             $output .= "<div id='". $id_prefix . $id ."_children_count' class='childCount clickable'>";
-            $output .= "Show ". num_rows($children) . $suffix;
+            $output .= "Show ". count($children) . $suffix;
             $output .= "</div>";
         } else {
             $output .= '<script>$("#'. $id_prefix . $id .'_details, #'. $id_prefix . $id .'_details_snip").addClass("noborder");</script>';
