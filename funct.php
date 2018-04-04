@@ -18,6 +18,15 @@ function query ($query_string, $params = array(), $return_results = true) {
     }
 }
 
+function getStatuses () {
+    if (isset($GLOBALS['statuses'])) {
+        return $GLOBALS['statuses'];
+    }
+    $status_query = "SELECT * FROM status WHERE id > 0 ORDER BY id ASC";
+    $GLOBALS['statuses'] = query($status_query);
+    return $GLOBALS['statuses'];
+}
+
 /**
  * simple method to encrypt or decrypt a plain text string
  * initialization vector(IV) has to be the same when encrypting and decrypting

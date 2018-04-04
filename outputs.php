@@ -71,13 +71,12 @@ function Output_User_Checkpoints ($id, $public_only = false) {
             $title = htmlspecialchars_decode($title);
             $text = htmlspecialchars_decode($text);
             
-            $status_query = "SELECT * FROM status WHERE id > 0 ORDER BY id ASC";
-            $statuses = query($status_query);
+            $statuses = getStatuses();
             
             $checkpoints_output .= "<li class='goal' cpid='". $checkpoint["id"] ."'>";
             $checkpoints_output .= "<div id='goal". $checkpoint["id"] ."' class='goal_title'>";
             if (!$public_only) {
-            $checkpoints_output .= "<span class='handle'>&#8645;</span>";
+                $checkpoints_output .= "<span class='handle'>&#8645;</span>";
                 $checkpoints_output .= "<select id='goal". $checkpoint["id"] ."_status' class='checkpoint_status'>";
                 if ($statuses && count($statuses) > 0) {
                     foreach($statuses as $status) {
@@ -156,8 +155,7 @@ function Get_Children($user_id, $parent_id, $public_only = false) {
             $title = htmlspecialchars_decode($title);
             $text = htmlspecialchars_decode($text);
             
-            $status_query = "SELECT * FROM status WHERE id > 0 ORDER BY id ASC";
-            $statuses = query($status_query);
+            $statuses = getStatuses();
             
             $child_output .= "<li class='checkpoint' cpid='". $child["id"] ."'>";
             $child_output .= "<div id='checkpoint". $child["id"] ."' class='checkpoint_title'>";
