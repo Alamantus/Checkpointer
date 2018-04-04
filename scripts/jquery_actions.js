@@ -406,19 +406,26 @@ function StyleCheckpointStatusOnLoad (collapseChildren) {
 }
 function ReStyleCheckpointsStatus () {
     $(".checkpoint_status").each(function () {
+        var parent = $(this).parent().parent();
+        var cpid = parent.attr("cpid");
+        var id = parent.find("div")[0].id;
+        var checkpointManagers = $('#' + id + '_edit, #addCheckpoint' + cpid);
         if ($(this).val() == 2) {
-            $(this).parent().parent().addClass("complete");
-            $(this).parent().parent().find("div").each(function () {
+            parent.addClass("complete");
+            checkpointManagers.hide();
+            parent.find("div").each(function () {
                 $(this).addClass("complete");
             });
         } else if ($(this).val() == 3) {
-            $(this).parent().parent().addClass("cancelled");
-            $(this).parent().parent().find("div").each(function () {
+            parent.addClass("cancelled");
+            checkpointManagers.hide();
+            parent.find("div").each(function () {
                 $(this).addClass("cancelled");
             });
         } else {
-            $(this).parent().parent().removeClass("complete cancelled");
-            $(this).parent().parent().find("div").each(function () {
+            parent.removeClass("complete cancelled");
+            checkpointManagers.show();
+            parent.find("div").each(function () {
                 $(this).removeClass("complete cancelled");
             });
         }
@@ -426,25 +433,32 @@ function ReStyleCheckpointsStatus () {
 }
 function StyleChildCheckpointStatus (element, collapseChildren) {
     collapseChildren = (typeof collapseChildren != 'undefined') ? collapseChildren : true;
+    var parent = element.parent().parent();
+    var cpid = parent.attr("cpid");
+    var id = parent.find("div")[0].id;
+    var checkpointManagers = $('#' + id + '_edit, #addCheckpoint' + cpid);
     if (element.val() == 2) {
-        element.parent().parent().addClass("complete");
-        element.parent().parent().find("div").each(function () {
+        parent.addClass("complete");
+        checkpointManagers.hide();
+        parent.find("div").each(function () {
             $(this).addClass("complete");
         });
     } else if (element.val() == 3) {
-        element.parent().parent().addClass("cancelled");
-        element.parent().parent().find("div").each(function () {
+        parent.addClass("cancelled");
+        checkpointManagers.hide();
+        parent.find("div").each(function () {
             $(this).addClass("cancelled");
         });
     } else {
-        $(this).parent().parent().removeClass("complete cancelled");
-        $(this).parent().parent().find("div").each(function () {
+        parent.removeClass("complete cancelled");
+        checkpointManagers.show();
+        parent.find("div").each(function () {
             $(this).removeClass("complete cancelled");
         });
     }
     if (collapseChildren) {
         // Collapse all children
-        element.parent().parent().find(".childCount").each(function (event) {
+        parent.find(".childCount").each(function (event) {
             var thisID = $(this).attr('id');
             var childrenID = "#" + thisID.replace("_count", "");
             $(this).show("fast");
