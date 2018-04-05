@@ -216,7 +216,7 @@ $( document ).ready(function() {
             $(titleID + "_confirm").hide();
                         
             $(".privacyExplanation").click(function (event) {
-                var text = "If this goal's privacy is set to Public, anyone who accesses www.checkpointer.tk/?user=<Your-Username-Here> will be able to see this goal and all its checkpoints.\nThis is useful if you want to share your goals with people.";
+                var text = "If this goal's privacy is set to Public, anyone who accesses " + window.location.href + "?user=<Your-Username-Here> will be able to see this goal and all its checkpoints.\nThis is useful if you want to share your goals with people.";
                 alert(text);
             });
             
