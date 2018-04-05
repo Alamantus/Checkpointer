@@ -40,7 +40,7 @@ elseif ($view_user != false) {
         echo "<div class='infoPage'><strong>There is nobody with the username \"". $view_user ."\" on Checkpointer.</strong></div>";
     } else {
         echo "<div class='infoPage' style='width: 90%; max-width: 90%'><h2>". Get_Username($user_id) ."'s Goals</h2>";    //Re-calculate to get username as it was entered in database.
-        Output_User_Checkpoints($user_id, true);
+        echo Output_Checkpoints_Recursive($user_id, 0, true);
         echo "</div>";
     }
 }
@@ -68,7 +68,7 @@ elseif (!$action && $view_user == false) {
         }
         
         // And show checkpoints
-        Output_User_Checkpoints($current_user);
+        echo Output_Checkpoints_Recursive($current_user);
     } //end else to show checkpoints
 }
 
