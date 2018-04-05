@@ -207,13 +207,13 @@ $( document ).ready(function() {
             detailsEditBox += "&nbsp;&nbsp;&nbsp;&nbsp;";
             detailsEditBox += "<span id='" + titleID.replace("#", "") + "_noButton' class='clickable'>No</span>";
             detailsEditBox += "</div>";
-            
+
             $(titleID).children(".title").html(titleEditBox);
             
             $(detailsSnipID).hide("fast");
             $(detailsID).show("fast");
             $(detailsID).children(detailsClass + "_text").html(detailsEditBox);
-            $("#" + titleID.replace("#", "") + "_confirm").hide();
+            $(titleID + "_confirm").hide();
                         
             $(".privacyExplanation").click(function (event) {
                 var text = "If this goal's privacy is set to Public, anyone who accesses www.checkpointer.tk/?user=<Your-Username-Here> will be able to see this goal and all its checkpoints.\nThis is useful if you want to share your goals with people.";
@@ -221,15 +221,15 @@ $( document ).ready(function() {
             });
             
             // Delete Checkpoint Button
-            $("#" + titleID.replace("#", "") + "_delete").click(function (event) {
-                $("#" + titleID.replace("#", "") + "_delete").hide("fast");
-                $("#" + titleID.replace("#", "") + "_confirm").show("fast");
+            $(titleID + "_delete").click(function (event) {
+                $(titleID + "_delete").hide("fast");
+                $(titleID + "_confirm").show("fast");
             });
-            $("#" + titleID.replace("#", "") + "_noButton").click(function (event) {
-                $("#" + titleID.replace("#", "") + "_confirm").hide("fast");
-                $("#" + titleID.replace("#", "") + "_delete").show("fast");
+            $(titleID + "_noButton").click(function (event) {
+                $(titleID + "_confirm").hide("fast");
+                $(titleID + "_delete").show("fast");
             });
-            $("#" + titleID.replace("#", "") + "_yesButton").click(function (event) {
+            $(titleID + "_yesButton").click(function (event) {
                 var areYouSure = confirm("This deletes this checkpoint and any sub-checkpoints attached to it, and it is impossible to retrieve them!\n\nAre you sure you want to delete?");
                 if (areYouSure == true) {
                     var postData = { id: checkpointID };
@@ -242,8 +242,8 @@ $( document ).ready(function() {
                             }
                         });
                 } else {
-                    $("#" + titleID.replace("#", "") + "_confirm").hide("fast");
-                    $("#" + titleID.replace("#", "") + "_delete").show("fast");
+                    $(titleID + "_confirm").hide("fast");
+                    $(titleID + "_delete").show("fast");
                 }
             });
         
@@ -270,21 +270,6 @@ $( document ).ready(function() {
                     }
                 });
         }
-    });
-    
-    // Show/hide checkpoint details
-    $(".checkpoint_details_snip").click(function (event) {
-        var thisID = $(this).attr('id');
-        var detailsID = "#" + thisID.replace("_snip", "");
-        $(this).hide("fast");
-        $(detailsID).show("fast");
-    });
-    $(".hideDetailsButton").click(function (event) {
-        var thisID = $(this).attr('id');
-        var detailsID = "#" + thisID.replace("_hide", "");
-        var detailsSnipID = "#" + thisID.replace("hide", "snip");
-        $(detailsID + "_snip").show("fast");
-        $(detailsID).hide("fast");
     });
     
     // Show/hide checkpoint children
@@ -336,7 +321,12 @@ function hideElements () {
     $("#createAccountForm").hide();
     $("#loginForm").hide();
     $("#newGoalForm").hide();
-    $(".checkpoint_details").hide();
+    $(".checkpoint_details").each(function() {
+        var detailsText = this.id + '_text';
+        if ($('#' + detailsText).text() == '') {
+            $(this).hide();
+        }
+    });
     $(".children").each(function () {
         if ( typeof $.cookie($(this).attr('id')) == 'undefined' ) {
             $(this).hide();

@@ -194,24 +194,12 @@ function Get_Children($user_id, $parent_id, $public_only = false) {
             }
             $output .= "</div>";
             if ($text != "") {
-            $output .= "<div id='checkpoint". $checkpoint["id"] ."_details_snip' title='Expand Details' class='checkpoint_details_snip clickable'>";
-                $text_linebreak_removed = preg_replace("/<br[ ]?\/?>/", " ", $text);
-                $output .= substr($text_linebreak_removed, 0, 30);
-                if (strlen($text_linebreak_removed) > 30) {
-                    $output .= "...";
-                }
-            $output .= "</div>";
+                $output .= "<div id='checkpoint". $checkpoint["id"] ."_details' class='checkpoint_details'>";
+                $output .= "<div id='checkpoint". $checkpoint["id"] ."_details_text' class='checkpoint_details_text'>";
+                $output .= $text;
+                $output .= "</div>";
+                $output .= "</div>";
             }
-            $output .= "<div id='checkpoint". $checkpoint["id"] ."_details' class='checkpoint_details'>";
-            $output .= "<div class='checkpoint_actions'>";
-            $output .= "<span id='checkpoint". $checkpoint["id"] ."_details_hide' class='hideDetailsButton clickable'>";
-            $output .= "Collapse";
-            $output .= "</span>";
-            $output .= "</div>";
-            $output .= "<div id='checkpoint". $checkpoint["id"] ."_details_text' class='checkpoint_details_text'>";
-            $output .= $text;
-            $output .= "</div>";
-            $output .= "</div>";
             if (!$public_only) {
             $output .= "<div class='addCheckpointArea'>";
                 $output .= "<div id='addCheckpoint". $checkpoint["id"] ."_form' class='addCheckpointForm'>";
