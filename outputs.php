@@ -50,7 +50,7 @@ function Return_Edit_Checkpoint_Form ($id, $title, $text, $sort) {
 
 function Output_Checkpoints_Recursive($user_id, $parent_id = 0, $public_only = false) {
     $checkpoints_query = "SELECT c.*, s.name AS 'status_name' FROM checkpoint c LEFT JOIN status s ON c.status=s.id WHERE parent=? AND owner=?";
-    if ($public_only) {
+    if ($public_only && $parent_id == 0) {
         $checkpoints_query .= " AND is_public = 1";
     }
     $checkpoints_query .= " ORDER BY sort ASC";
