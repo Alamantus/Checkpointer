@@ -33,7 +33,7 @@
     
     <div class="headerButton">
         <span id="newGoalButton" class="clickable">New Goal</span>
-        <div id="newGoalForm">
+        <div id="newGoalForm" style="display:none;">
             <span id="cancelNewGoalButton" class="clickable">Cancel</span>
             <?php echo Return_Add_Checkpoint_Form (0, ""); ?>
         </div>
@@ -44,7 +44,7 @@
     ?>
     <div class="headerButton">
         <span id="loginButton" class="clickable">Log in</span>
-        <div id="loginForm">
+        <div id="loginForm" style="display:none;">
             <span id="cancelLoginButton" class="clickable">Cancel</span>
             <form name="logIn" method="post" action="?action=login" onsubmit="return validateLogin()">
             Username:<br />
@@ -60,7 +60,7 @@
     </div>
     <div class="headerButton">
         <span id="createAccountButton" class="clickable">Create Account</span>
-        <div id="createAccountForm">
+        <div id="createAccountForm" style="display:none;">
             <span id="cancelCreateAccountButton" class="clickable">Cancel</span>
             <form name="createAccount" method="post" action="?action=createaccount">
             Username:<br />

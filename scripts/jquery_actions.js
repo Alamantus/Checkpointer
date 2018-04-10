@@ -1,6 +1,4 @@
 $( document ).ready(function() {
-    hideElements();
-    
     // Login form
     $("#loginButton").click(function (event) {
         $(this).parent().css("background-color", "#D9D9FF");
@@ -154,27 +152,26 @@ $( document ).ready(function() {
     });
     
     // Refresh List Button
-    $("#refreshButton").click(function (event) {
-        var userID = $(this).children().attr('id');
-        var originalText = $("#" + userID).text();
-        var loadingText = "Loading...";
-        var doneText = "Done!";
-        if (originalText != loadingText && originalText != doneText) {
-            $("#" + userID).text(loadingText);
-            $.get( "ajax/get_list.php", "id=" + userID)
-                .done(function (data) {
-                    $("#page").html(data);
-                    hideElements();
-                    $("#" + userID).text(doneText);
-                    setTimeout(function () {
-                            $("#" + userID).fadeOut(function() {
-                                $(this).text(originalText)
-                            }).fadeIn();
-                            //$("#" + userID).text(originalText);
-                        }, 2000);
-                });
-        }
-    });
+    // $("#refreshButton").click(function (event) {
+    //     var userID = $(this).children().attr('id');
+    //     var originalText = $("#" + userID).text();
+    //     var loadingText = "Loading...";
+    //     var doneText = "Done!";
+    //     if (originalText != loadingText && originalText != doneText) {
+    //         $("#" + userID).text(loadingText);
+    //         $.get( "ajax/get_list.php", "id=" + userID)
+    //             .done(function (data) {
+    //                 $("#page").html(data);
+    //                 $("#" + userID).text(doneText);
+    //                 setTimeout(function () {
+    //                         $("#" + userID).fadeOut(function() {
+    //                             $(this).text(originalText)
+    //                         }).fadeIn();
+    //                         //$("#" + userID).text(originalText);
+    //                     }, 2000);
+    //             });
+    //     }
+    // });
     
     // Edit Checkpoint Button
     $(".editButton").click(function (event) {
@@ -316,30 +313,6 @@ $( document ).ready(function() {
     }
     
 });
-
-function hideElements () {
-    $("#createAccountForm").hide();
-    $("#loginForm").hide();
-    $("#newGoalForm").hide();
-    $(".checkpoint_details").each(function() {
-        var detailsText = this.id + '_text';
-        if ($('#' + detailsText).text() == '') {
-            $(this).hide();
-        }
-    });
-    $(".children").each(function () {
-        if ( typeof $.cookie($(this).attr('id')) == 'undefined' ) {
-            $(this).hide();
-        } else {
-            if ($("#" + $(this).attr('id') + "_count").text().indexOf("sorting") >= 0) {
-                $(this).hide();
-            } else {
-                $("#" + $(this).attr('id') + "_count").hide();
-            }
-        }
-    });
-    $(".addCheckpointForm").hide();
-}
 
 function StyleCheckpointStatusOnLoad (collapseChildren) {
     collapseChildren = (typeof collapseChildren != 'undefined') ? collapseChildren : true;

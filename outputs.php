@@ -113,22 +113,32 @@ function Output_Checkpoints_Recursive($user_id, $parent_id = 0, $public_only = f
                 $output .= "</strong>";
             }
             $output .= "</div>";
-            $output .= "<div id='" . $type . $checkpoint["id"] ."_details' class='" . $type . "_details'>";
+            $output .= "<div id='" . $type . $checkpoint["id"] ."_details' class='" . $type . "_details'";
+            if ($text == '') {
+                $output .= ' style="display:none;"';
+            }
+            $output .= ">";
             $output .= "<div id='" . $type . $checkpoint["id"] ."_details_text' class='" . $type . "_details_text'>";
             $output .= $text;
             $output .= "</div>";
             $output .= "</div>";
             if (!$public_only) {
-            $output .= "<div class='addCheckpointArea'>";
-                $output .= "<div id='addCheckpoint". $checkpoint["id"] ."_form' class='addCheckpointForm'>";
+                $output .= "<div class='addCheckpointArea'>";
+                $output .= "<div id='addCheckpoint". $checkpoint["id"] ."_form' class='addCheckpointForm' style='display:none;'>";
                 $output .= "<h3>Add Checkpoint to \"" . $title. "\"</h3>";
                 $output .= Return_Add_Checkpoint_Form($checkpoint["id"], $type);
                 $output .= "</div>";
                 $output .= "</div>";
             }
             $count_suffix = " " . ($parent_id == 0 ? '' : 'Sub-') . "Checkpoints";
-            $output .= Count_Children($checkpoint["id"], $type, $count_suffix, $public_only);  //Inserts its own div section.
-            $output .= "<div id='" . $type . $checkpoint["id"] ."_children' class='children'>";
+            $count_children = Count_Children($checkpoint["id"], $type, $count_suffix, $public_only);  //Inserts its own div section.
+            $output .= $count_children;
+            $children_id = $type . $checkpoint["id"] . '_children';
+            $output .= "<div id='" . $children_id . "' class='children'";
+            if (!isset($_COOKIE[$children_id]) || $checkpoint["status"] == 2 || $checkpoint["status"] == 3) {
+                $output .= " style='display:none;'";
+            }
+            $output .= ">";
             $output .= "<span id='" . $type . $checkpoint["id"] ."_children_hide' class='hideChildrenButton clickable'>";
             $output .= "Hide" . $count_suffix;
             $output .= "</span>";
@@ -153,14 +163,21 @@ function Output_Checkpoints_Recursive($user_id, $parent_id = 0, $public_only = f
     }
     return $output;
 }
-function Count_Children($id, $id_prefix, $suffix, $public_only = false) {
+function Count_Children($id, $type, $suffix, $public_only = false) {
+    $children_id = $type . $id . '_children';
     $children_query = "SELECT * FROM checkpoint WHERE parent=? ORDER BY sort ASC";
     $children = query($children_query, array($id));
     $output = "";
     
     if (!$public_only) {
-        $output .= "<div id='". $id_prefix . $id ."_children_count' class='childCount clickable'>";
-        if ($children != false && count($children) > 0) {
+        $has_children = $children != false && count($children) > 0;
+        $should_hide = isset($_COOKIE[$children_id]);
+        $output .= "<div id='". $children_id . "_count' class='childCount clickable'";
+        if ($has_children && $should_hide) {
+            $output .= " style='display:none;'";
+        }
+        $output .= ">";
+        if ($has_children) {
             $output .= "Show ". count($children) . $suffix;
         } else {
             $output .= "Open ". $suffix . " area for sorting";
@@ -168,11 +185,11 @@ function Count_Children($id, $id_prefix, $suffix, $public_only = false) {
         $output .= "</div>";
     } else {
         if ($children != false && count($children) > 0) {
-            $output .= "<div id='". $id_prefix . $id ."_children_count' class='childCount clickable'>";
+            $output .= "<div id='". $children_id . "_count' class='childCount clickable'>";
             $output .= "Show ". count($children) . $suffix;
             $output .= "</div>";
         } else {
-            $output .= '<script>$("#'. $id_prefix . $id .'_details, #'. $id_prefix . $id .'_details_snip").addClass("noborder");</script>';
+            $output .= '<script>$("#'. $type . $id .'_details, #'. $type . $id .'_details_snip").addClass("noborder");</script>';
         }
     }
     return $output;
