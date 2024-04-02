@@ -11,10 +11,8 @@ define('ENCRYPT_IV', 'Replace With Another Random 32-Character String');
 
 define('TIMEZONE', 'UTC');
 
-define('DATABASE_LOCATION', '');
-
 function connection() {
-    $sqlite_connection = new PDO('sqlite:' . DATABASE_LOCATION . 'checkpointer.db');
+    $sqlite_connection = new PDO('sqlite:' . __DIR__ . '/checkpointer.db');
     // Set errormode to exceptions
     $sqlite_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sqlite_connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);

@@ -12,7 +12,6 @@ Upload the files.
 
 Modify `config.php`:
 
-- Set `DATABASE_LOCATION` to point to the server directory containing the `checkpointer.db` SQLite file.
 - If you keep `ENCRYPT_DATA` set to `true` to obscure data entered into the database, then create a key and IV pair.
   - If you set `ENCRYPT_DATA` to `false`, then it will skip the encryption step.
   - _**Warning!**_ Changing `ENCRYPT_DATA`'s value after entering data will cause problems like making the data unusable, so don't do it!
